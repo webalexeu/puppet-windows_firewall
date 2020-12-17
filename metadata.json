@@ -1,0 +1,28 @@
+{
+  "name": "webalex-windows_firewall",
+  "version": "0.1.0",
+  "author": "webalex",
+  "summary": "Manage the windows firewall with Puppet",
+  "license": "Apache-2.0",
+  "source": "https://github.com/webalexeu/puppet-windows_firewall.git",
+  "project_page": "https://github.com/webalexeu/puppet-windows_firewall",
+  "issues_url": "https://github.com/webalexeu/puppet-windows_firewall/issues",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "windows"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
+    }
+  ],
+  "project_url": "https://github.com/webalexeu/puppet-windows_firewall.git",
+  "pdk-version": "1.18.1",
+  "template-url": "pdk-default#1.18.1",
+  "template-ref": "tags/1.18.1-0-g3d2e75c"
+}
