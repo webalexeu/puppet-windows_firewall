@@ -239,7 +239,7 @@ C:\>puppet resource windows_firewall_ipsec_rule winrm
 The basic syntax for ensuring rules is: 
 
 ```puppet
-windows_firewall_ipsec!rule { "name of rule":
+windows_firewall_ipsec_rule { "name of rule":
   ensure => present,
   ...
 }
