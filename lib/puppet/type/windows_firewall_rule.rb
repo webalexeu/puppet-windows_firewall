@@ -140,9 +140,14 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc "service names this rule applies to"
   end
 
-  newproperty(:security) do
+  newproperty(:authentication) do
     desc "Specifies that authentication or encryption is required on firewall rules (authentication, encryption)"
-    newvalues(:authentication, :encryption)
+    newvalues(:notrequired, :required, :noencap)
+  end
+
+  newproperty(:encryption) do
+    desc "Specifies that authentication or encryption is required on firewall rules (authentication, encryption)"
+    newvalues(:notrequired, :required, :dynamic)
   end
 
   newproperty(:remote_machine) do
