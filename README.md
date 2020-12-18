@@ -10,10 +10,11 @@
 
 ## Description
 
-Manage the windows firewall with Puppet (`netsh` and PowerShell as required).
+Manage the windows firewall with Puppet (PowerShell as required).
 
 ## Features
 * Create/edit/delete individual firewall rules (`windows_firewall_rule`)
+* Create/edit/delete individual firewall ipsec rules (`windows_firewall_ipsec_rule`)
 * Enable/disable firewall groups (`windows_firewall_group`)
 * Adjust global settings (`windows_firewall_global`)
 * Adjust per-profile settings (`windows_firewall_profile`)
@@ -149,6 +150,37 @@ windows_firewall_rule { "puppet - open port in specific profiles":
 }
 ```
 
+#### Manage authentication
+```puppet
+windows_firewall_rule { "puppet - open port in specific profiles":
+  ensure           => present,
+  direction        => "inbound",
+  action           => "allow",
+  protocol         => "tcp",
+  profile          => ["private", "domain"],
+  local_port       => "666",
+  authentication   => "required",
+  local_user       => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-9876)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1234)",
+  remote_machine   => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-4321)"
+}
+```
+#### Manage encryption
+```puppet
+windows_firewall_rule { "puppet - open port in specific profiles":
+  ensure         => present,
+  direction      => "inbound",
+  action         => "allow",
+  protocol       => "tcp",
+  profile        => ["private", "domain"],
+  local_port     => "666",
+  authentication => "required",
+  encryption     => "required",
+  local_user     => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1829)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1234)",
+  remote_user    => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1829)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-5678)",
+  remote_machine => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-4321)"
+}
+```
+
 #### Purging rules
 
 You can choose to purge unmanaged rules from the system (be careful! - this will
@@ -167,6 +199,69 @@ windows_firewall_rule { "puppet - allow all":
   protocol   => "tcp",
   local_port => "any",
 }
+```
+
+### windows_firewall_ipsec_rule
+Manage individual ipsec rules (Connection Security rules)
+
+windows_firewall_ipsec_rule { 'test - ipsec':
+  ensure            => present,
+  local_port        => '9999,1900',
+  local_address     => $::ipaddress,
+  remote_address    => '192.168.0.0/24,192.168.1.0/24',
+  protocol          => 'tcp',
+  inbound_security  => 'require',
+  outbound_security => 'require',
+  phase1auth_set    => 'computerkerberos',
+  phase2auth_set    => 'userkerberos'
+}
+
+#### Listing ipsec firewall rules
+
+The type and provider is able to enumerate the firewall rules existing on the 
+system:
+
+```shell
+C:\>puppet resource windows_firewall_ipsec_rule
+...
+#WIP
+```
+
+You can limit output to a single rule by passing its name as an argument, eg:
+
+```shell
+C:\>puppet resource windows_firewall_ipsec_rule winrm
+#WIP
+```
+
+#### Ensuring a rule
+
+The basic syntax for ensuring rules is: 
+
+```puppet
+windows_firewall_ipsec!rule { "name of rule":
+  ensure => present,
+  ...
+}
+```
+
+If a rule with the same name but different properties already exists, it will be
+deleted and re-created to ensure it is defined correctly. To delete a rule, set
+`ensure => absent`.
+
+#WIP
+
+#### Purging rules
+
+You can choose to purge unmanaged rules from the system (be careful! - this will
+remove _any_ rule that is not manged by Puppet including those created by 
+Windows itself):
+
+```puppet
+resources { "windows_firewall_ipsec_rule":
+  purge => true,
+}
+
 ```
 
 ### windows_firewall_group
