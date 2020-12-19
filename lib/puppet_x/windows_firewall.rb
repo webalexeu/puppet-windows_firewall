@@ -38,7 +38,7 @@ module PuppetX::WindowsFirewall
         SCRIPT_PATH,
         )
     Puppet.debug("Checking for #{SCRIPT_FILE} at #{check_for_script}")
-    if File.exists? check_for_script
+    if File.exist? check_for_script
       script = check_for_script
     else
       # 2nd priority - custom module path, then basemodulepath
@@ -48,7 +48,7 @@ module PuppetX::WindowsFirewall
       end.each do |path_element|
         check_for_script = File.join(path_element, MOD_DIR, SCRIPT_PATH)
         Puppet.debug("Checking for #{SCRIPT_FILE} at #{check_for_script}")
-        if File.exists? check_for_script
+        if File.exist? check_for_script
           script = check_for_script
           break;
         end
@@ -59,7 +59,7 @@ module PuppetX::WindowsFirewall
   def self.find_ps_bridge_in_cache
     check_for_script = File.join(Puppet.settings[:libdir], SCRIPT_PATH)
     Puppet.debug("Checking for #{SCRIPT_FILE} at #{check_for_script}")
-    script = File.exists?(check_for_script) ? check_for_script : nil
+    script = File.exist?(check_for_script) ? check_for_script : nil
     script
   end
   # convert a puppet type key name to the argument to use for `netsh` command
@@ -92,38 +92,38 @@ module PuppetX::WindowsFirewall
   end
   def self.to_ps(key)
     {
-      :enabled               => lambda { |x| camel_case(x)},
-      :action                => lambda { |x| camel_case(x)},
-      :direction             => lambda { |x| camel_case(x)},
-      :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
-      :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
-      :protocol              => lambda { |x| x.to_s.upcase.sub("V","v")},
+      :enabled               => lambda { |x| camel_case(x) },
+      :action                => lambda { |x| camel_case(x) },
+      :direction             => lambda { |x| camel_case(x) },
+      :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",") },
+      :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",") },
+      :protocol              => lambda { |x| x.to_s.upcase.sub("V","v") },
       :icmp_type             => lambda { |x| camel_case(x)},
       :edge_traversal_policy => lambda { |x| camel_case(x)},
-      :local_port            => lambda { |x| "\"#{camel_case(x)}\""},
-      :remote_port           => lambda { |x| "\"#{camel_case(x)}\""},
-      :local_address         => lambda { |x| "\"#{camel_case(x)}\""},
-      :remote_address        => lambda { |x| "\"#{camel_case(x)}\""},
-      :program               => lambda { |x| x.gsub(/\\/, '\\\\')},
-      :authentication        => lambda { |x| camel_case(x)},
-      :encryption            => lambda { |x| camel_case(x)},
+      :local_port            => lambda { |x| "\"#{camel_case(x)}\"" },
+      :remote_port           => lambda { |x| "\"#{camel_case(x)}\"" },
+      :local_address         => lambda { |x| "\"#{camel_case(x)}\"" },
+      :remote_address        => lambda { |x| "\"#{camel_case(x)}\"" },
+      :program               => lambda { |x| x.gsub(/\\/, '\\\\') },
+      :authentication        => lambda { |x| camel_case(x) },
+      :encryption            => lambda { |x| camel_case(x) },
       #Those values should be transmitted as upcase to the powershell Module
-      :remote_machine        => lambda { |x| x.upcase},
-      :local_user            => lambda { |x| x.upcase},
-      :remote_user           => lambda { |x| x.upcase},
+      :remote_machine        => lambda { |x| x.upcase },
+      :local_user            => lambda { |x| x.upcase },
+      :remote_user           => lambda { |x| x.upcase },
     }.fetch(key, lambda { |x| x })
   end
   def self.to_ruby(key)
     {
-      :enabled                => lambda { |x| snake_case_sym(x)},
-      :action                 => lambda { |x| snake_case_sym(x)},
-      :direction              => lambda { |x| snake_case_sym(x)},
-      :interface_type         => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)}},
-      :profile                => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)}},
-      :protocol               => lambda { |x| snake_case_sym(x)},
+      :enabled                => lambda { |x| snake_case_sym(x) },
+      :action                 => lambda { |x| snake_case_sym(x) },
+      :direction              => lambda { |x| snake_case_sym(x) },
+      :interface_type         => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)} },
+      :profile                => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)} },
+      :protocol               => lambda { |x| snake_case_sym(x) },
       :icmp_type              => lambda { |x| x ? x.downcase : x },
-      :edge_traversal_policy  => lambda { |x| snake_case_sym(x)},
-      :program                => lambda { |x| x.gsub(/\\\\/, '\\')},
+      :edge_traversal_policy  => lambda { |x| snake_case_sym(x) },
+      :program                => lambda { |x| x.gsub(/\\\\/, '\\') },
       :remote_port            => lambda { |x| x.downcase },
       :local_port             => lambda { |x| x.downcase },
       :remote_address         => lambda { |x| x.downcase },
