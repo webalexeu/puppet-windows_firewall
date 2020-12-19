@@ -84,8 +84,8 @@ module PuppetX::WindowsFirewallIPSec
     {
       :enabled                => ->(x) { snake_case_sym(x) },
       :action                 => ->(x) { snake_case_sym(x) },
-      :interface_type         => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip)} },
-      :profile                => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip)} },
+      :interface_type         => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
+      :profile                => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
       :protocol               => ->(x) { snake_case_sym(x) },
       :remote_port            => ->(x) { x.downcase },
       :local_port             => ->(x) { x.downcase },
