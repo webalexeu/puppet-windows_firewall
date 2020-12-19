@@ -40,7 +40,7 @@ Puppet::Type.newtype(:windows_firewall_profile) do
     desc 'Merge local firewall rules with Group Policy rules. Valid when configuring a Group Policy store'
     newvalues(:enable, :disable, :notconfigured)
     validate do |value|
-      raise('property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this')
+      raise("property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this")
     end
   end
 
@@ -48,7 +48,7 @@ Puppet::Type.newtype(:windows_firewall_profile) do
     desc 'Merge local connection security rules with Group Policy rules. Valid when configuring a Group Policy store'
     newvalues(:enable, :disable, :notconfigured)
     validate do |value|
-      raise('property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this')
+      raise("property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this")
     end
   end
 
