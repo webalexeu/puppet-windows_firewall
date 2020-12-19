@@ -1,5 +1,4 @@
 require 'puppet_x'
-#require 'puppet_x/windows_firewall'
 require_relative '../../../puppet_x/windows_firewall_ipsec'
 
 Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_rule, :parent => Puppet::Provider) do
