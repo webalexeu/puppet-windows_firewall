@@ -44,6 +44,7 @@ jobs:
 branches:
   only:
     - master
+    - cleaning code
     - /^v\d/
 notifications:
   email: false
