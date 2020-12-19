@@ -95,9 +95,9 @@ module PuppetX::WindowsFirewall
       :enabled               => ->(x) { camel_case(x) },
       :action                => ->(x) { camel_case(x) },
       :direction             => ->(x) { camel_case(x) },
-      :interface_type        => ->(x) { x.map {|e| camel_case(e)}.join(",") },
-      :profile               => ->(x) { x.map {|e| camel_case(e)}.join(",") },
-      :protocol              => ->(x) { x.to_s.upcase.sub("V","v") },
+      :interface_type        => ->(x) { x.map {|e| camel_case(e)}.join(',') },
+      :profile               => ->(x) { x.map {|e| camel_case(e)}.join(',') },
+      :protocol              => ->(x) { x.to_s.upcase.sub('V','v') },
       :icmp_type             => ->(x) { camel_case(x)},
       :edge_traversal_policy => ->(x) { camel_case(x)},
       :local_port            => ->(x) { "\"#{camel_case(x)}\"" },
@@ -118,8 +118,8 @@ module PuppetX::WindowsFirewall
       :enabled                => ->(x) { snake_case_sym(x) },
       :action                 => ->(x) { snake_case_sym(x) },
       :direction              => ->(x) { snake_case_sym(x) },
-      :interface_type         => ->(x) { x.split(",").map{ |e| snake_case_sym(e.strip)} },
-      :profile                => ->(x) { x.split(",").map{ |e| snake_case_sym(e.strip)} },
+      :interface_type         => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip)} },
+      :profile                => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip)} },
       :protocol               => ->(x) { snake_case_sym(x) },
       :icmp_type              => ->(x) { x ? x.downcase : x },
       :edge_traversal_policy  => ->(x) { snake_case_sym(x) },
@@ -140,7 +140,7 @@ module PuppetX::WindowsFirewall
   # 2. converting spaces to underscores
   # 3. convert to symbol
   def self.key_name(input)
-    input.downcase.gsub(/\s/, "_").to_sym
+    input.downcase.gsub(/\s/, '_').to_sym
   end
   # Convert input CamelCase to snake_case symbols
   def self.snake_case_sym(input)
@@ -271,17 +271,17 @@ module PuppetX::WindowsFirewall
           #   DHGroup2-AES128-SHA1,DHGroup2-3DES-SHA1
           # but must be input with a colon like this:
           #   DHGroup2:AES128-SHA1,DHGroup2:3DES-SHA1
-          safe_value = value.split(",").map { |e|
-            e.sub("-", ":")
-          }.join(",")
+          safe_value = value.split(',').map { |e|
+            e.sub('-', ':')
+          }.join(',')
         when :strongcrlcheck
-          safe_value = value.split(":")[0]
+          safe_value = value.split(':')[0]
         when :defaultexemptions
-          safe_value = value.split(",").sort
+          safe_value = value.split(',').sort
         when :saidletimemin
-          safe_value = value.sub("min","")
+          safe_value = value.sub('min','')
         when :ipsecthroughnat
-          safe_value = value.gsub(" ","")
+          safe_value = value.gsub(' ','')
         else
           safe_value = value
         end
@@ -313,5 +313,3 @@ module PuppetX::WindowsFirewall
     profiles
   end
 end
-
-
