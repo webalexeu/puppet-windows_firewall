@@ -3,9 +3,9 @@ require 'pp'
 module PuppetX
   module WindowsFirewall
 
-    MOD_DIR = "windows_firewall/lib"
-    SCRIPT_FILE = "ps-bridge.ps1"
-    SCRIPT_PATH = File.join("ps/windows_firewall", SCRIPT_FILE)
+    MOD_DIR = 'windows_firewall/lib'
+    SCRIPT_FILE = 'ps-bridge.ps1'
+    SCRIPT_PATH = File.join('ps/windows_firewall', SCRIPT_FILE)
 
 
     # We need to be able to invoke the PS bridge script in both agent and apply
@@ -32,7 +32,7 @@ module PuppetX
         raise("windows_firewall unable to find #{SCRIPT_FILE} in expected location")
       end
 
-      cmd = ["powershell.exe", "-ExecutionPolicy", "Bypass", "-File", script]
+      cmd = ['powershell.exe', '-ExecutionPolicy', 'Bypass', '-File', script]
       cmd
     end
 
@@ -41,7 +41,7 @@ module PuppetX
       check_for_script = File.join(
           Puppet.settings[:environmentpath],
           Puppet.settings[:environment],
-          "modules",
+          'modules',
           MOD_DIR,
           SCRIPT_PATH,
           )
@@ -79,30 +79,30 @@ module PuppetX
     # convert a puppet type key name to the argument to use for `netsh` command
     def self.global_argument_lookup(key)
       {
-          :keylifetime       => "mainmode mmkeylifetime",
-          :secmethods        => "mainmode mmsecmethods",
-          :forcedh           => "mainmode mmforcedh",
-          :strongcrlcheck    => "ipsec strongcrlcheck",
-          :saidletimemin     => "ipsec saidletimemin",
-          :defaultexemptions => "ipsec defaultexemptions",
-          :ipsecthroughnat   => "ipsec ipsecthroughnat",
-          :authzcomputergrp  => "ipsec authzcomputergrp",
-          :authzusergrp      => "ipsec authzusergrp",
+          :keylifetime       => 'mainmode mmkeylifetime',
+          :secmethods        => 'mainmode mmsecmethods',
+          :forcedh           => 'mainmode mmforcedh',
+          :strongcrlcheck    => 'ipsec strongcrlcheck',
+          :saidletimemin     => 'ipsec saidletimemin',
+          :defaultexemptions => 'ipsec defaultexemptions',
+          :ipsecthroughnat   => 'ipsec ipsecthroughnat',
+          :authzcomputergrp  => 'ipsec authzcomputergrp',
+          :authzusergrp      => 'ipsec authzusergrp',
       }.fetch(key, key.to_s)
     end
 
     # convert a puppet type key name to the argument to use for `netsh` command
     def self.profile_argument_lookup(key)
       {
-        :localfirewallrules         => "settings localfirewallrules",
-        :localconsecrules           => "settings localconsecrules",
-        :inboundusernotification    => "settings inboundusernotification",
-        :remotemanagement           => "settings remotemanagement",
-        :unicastresponsetomulticast => "settings unicastresponsetomulticast",
-        :logallowedconnections      => "logging allowedconnections",
-        :logdroppedconnections      => "logging droppedconnections",
-        :filename                   => "logging filename",
-        :maxfilesize                => "logging maxfilesize",
+        :localfirewallrules         => 'settings localfirewallrules',
+        :localconsecrules           => 'settings localconsecrules',
+        :inboundusernotification    => 'settings inboundusernotification',
+        :remotemanagement           => 'settings remotemanagement',
+        :unicastresponsetomulticast => 'settings unicastresponsetomulticast',
+        :logallowedconnections      => 'logging allowedconnections',
+        :logdroppedconnections      => 'logging droppedconnections',
+        :filename                   => 'logging filename',
+        :maxfilesize                => 'logging maxfilesize',
      }.fetch(key, key.to_s)
     end
 
@@ -184,7 +184,7 @@ module PuppetX
       Puppet.notice("(windows_firewall) adding rule '#{resource[:name]}'")
 
       # `Name` is mandatory and also a `parameter` not a `property`
-      args = [ "-Name", resource[:name] ]
+      args = [ '-Name', resource[:name] ]
       
       resource.properties.reject { |property|
         [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
@@ -200,13 +200,13 @@ module PuppetX
       }
       Puppet.debug "Creating firewall rule with args: #{args}"
 
-      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["create"] + args)
+      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ['create'] + args)
       Puppet.debug out
     end
 
     def self.rules
-      Puppet.debug("query all rules")
-      rules = JSON.parse Puppet::Util::Execution.execute(resolve_ps_bridge + ["show"]).to_s
+      Puppet.debug('query all rules')
+      rules = JSON.parse Puppet::Util::Execution.execute(resolve_ps_bridge + ['show']).to_s
       
       # Rules is an array of hash as-parsed and hash keys need converted to
       # lowercase ruby labels
@@ -221,7 +221,7 @@ module PuppetX
     end
 
     def self.groups
-      Puppet.debug("query all groups")
+      Puppet.debug('query all groups')
       # get all individual firewall rules, then create a new hash containing the overall group
       # status for each group of rules
       g = {}
@@ -259,7 +259,7 @@ module PuppetX
     def self.parse_profile(input)
       profile = {}
       first_line = true
-      profile_name = "__error__"
+      profile_name = '__error__'
       input.split("\n").reject { |line|
         line =~ /---/ || line =~ /^\s*$/
       }.each { |line|
@@ -270,7 +270,7 @@ module PuppetX
         else
           # nasty hack - "firewall policy" setting contains space and will break our
           # logic below. Also the setter in `netsh` to use is `firewallpolicy`. Just fix it...
-          line = line.sub("Firewall Policy", "firewallpolicy")
+          line = line.sub('Firewall Policy', 'firewallpolicy')
 
           # split each line at most twice by first glob of whitespace
           line_split = line.split(/\s+/, 2)
@@ -334,7 +334,7 @@ module PuppetX
         end
       }
 
-      globals[:name] = "global"
+      globals[:name] = 'global'
 
       Puppet.debug "Parsed windows firewall globals: #{globals}"
       globals
@@ -345,8 +345,8 @@ module PuppetX
       profiles = []
       # the output of `show allprofiles` contains several blank lines that make parsing somewhat
       # harder so just run it for each of the three profiles to make life easy...
-      ["publicprofile", "domainprofile", "privateprofile"].each { |profile|
-        profiles <<  parse_profile(Puppet::Util::Execution.execute([cmd, "advfirewall", "show", profile]).to_s)
+      ['publicprofile', 'domainprofile', 'privateprofile'].each { |profile|
+        profiles <<  parse_profile(Puppet::Util::Execution.execute([cmd, 'advfirewall', 'show', profile]).to_s)
       }
       profiles
     end
@@ -357,8 +357,8 @@ module PuppetX
       profiles = []
       # the output of `show allprofiles` contains several blank lines that make parsing somewhat
       # harder so just run it for each of the three profiles to make life easy...
-      ["publicprofile", "domainprofile", "privateprofile"].each { |profile|
-        profiles <<  parse_global(Puppet::Util::Execution.execute([cmd, "advfirewall", "show", "global"]).to_s)
+      ['publicprofile', 'domainprofile', 'privateprofile'].each { |profile|
+        profiles <<  parse_global(Puppet::Util::Execution.execute([cmd, 'advfirewall', 'show', 'global']).to_s)
       }
       profiles
     end
