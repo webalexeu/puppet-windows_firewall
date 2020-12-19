@@ -19,7 +19,7 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
 
   # firewall groups always exist we can only enable/disable them
   def exists?
-    #@property_hash[:ensure] == :present
+    # @property_hash[:ensure] == :present
     true
   end
 

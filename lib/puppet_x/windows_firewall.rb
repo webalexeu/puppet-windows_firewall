@@ -65,74 +65,74 @@ module PuppetX::WindowsFirewall
   # convert a puppet type key name to the argument to use for `netsh` command
   def self.global_argument_lookup(key)
     {
-        :keylifetime       => 'mainmode mmkeylifetime',
-        :secmethods        => 'mainmode mmsecmethods',
-        :forcedh           => 'mainmode mmforcedh',
-        :strongcrlcheck    => 'ipsec strongcrlcheck',
-        :saidletimemin     => 'ipsec saidletimemin',
-        :defaultexemptions => 'ipsec defaultexemptions',
-        :ipsecthroughnat   => 'ipsec ipsecthroughnat',
-        :authzcomputergrp  => 'ipsec authzcomputergrp',
-        :authzusergrp      => 'ipsec authzusergrp',
+        keylifetime       => 'mainmode mmkeylifetime',
+        secmethods        => 'mainmode mmsecmethods',
+        forcedh           => 'mainmode mmforcedh',
+        strongcrlcheck    => 'ipsec strongcrlcheck',
+        saidletimemin     => 'ipsec saidletimemin',
+        defaultexemptions => 'ipsec defaultexemptions',
+        ipsecthroughnat   => 'ipsec ipsecthroughnat',
+        authzcomputergrp  => 'ipsec authzcomputergrp',
+        authzusergrp      => 'ipsec authzusergrp',
     }.fetch(key, key.to_s)
   end
   # convert a puppet type key name to the argument to use for `netsh` command
   def self.profile_argument_lookup(key)
     {
-      :localfirewallrules         => 'settings localfirewallrules',
-      :localconsecrules           => 'settings localconsecrules',
-      :inboundusernotification    => 'settings inboundusernotification',
-      :remotemanagement           => 'settings remotemanagement',
-      :unicastresponsetomulticast => 'settings unicastresponsetomulticast',
-      :logallowedconnections      => 'logging allowedconnections',
-      :logdroppedconnections      => 'logging droppedconnections',
-      :filename                   => 'logging filename',
-      :maxfilesize                => 'logging maxfilesize',
+      localfirewallrules         => 'settings localfirewallrules',
+      localconsecrules           => 'settings localconsecrules',
+      inboundusernotification    => 'settings inboundusernotification',
+      remotemanagement           => 'settings remotemanagement',
+      unicastresponsetomulticast => 'settings unicastresponsetomulticast',
+      logallowedconnections      => 'logging allowedconnections',
+      logdroppedconnections      => 'logging droppedconnections',
+      filename                   => 'logging filename',
+      maxfilesize                => 'logging maxfilesize',
    }.fetch(key, key.to_s)
   end
   def self.to_ps(key)
     {
-      :enabled               => ->(x) { camel_case(x) },
-      :action                => ->(x) { camel_case(x) },
-      :direction             => ->(x) { camel_case(x) },
-      :interface_type        => ->(x) { x.map {|e| camel_case(e)}.join(',') },
-      :profile               => ->(x) { x.map {|e| camel_case(e)}.join(',') },
-      :protocol              => ->(x) { x.to_s.upcase.sub('V','v') },
-      :icmp_type             => ->(x) { camel_case(x)},
-      :edge_traversal_policy => ->(x) { camel_case(x)},
-      :local_port            => ->(x) { "\"#{camel_case(x)}\"" },
-      :remote_port           => ->(x) { "\"#{camel_case(x)}\"" },
-      :local_address         => ->(x) { "\"#{camel_case(x)}\"" },
-      :remote_address        => ->(x) { "\"#{camel_case(x)}\"" },
-      :program               => ->(x) { x.gsub(/\\/, '\\\\') },
-      :authentication        => ->(x) { camel_case(x) },
-      :encryption            => ->(x) { camel_case(x) },
+      enabled               => ->(x) { camel_case(x) },
+      action                => ->(x) { camel_case(x) },
+      direction             => ->(x) { camel_case(x) },
+      interface_type        => ->(x) { x.map { |e| camel_case(e)}.join(',') },
+      profile               => ->(x) { x.map { |e| camel_case(e)}.join(',') },
+      protocol              => ->(x) { x.to_s.upcase.sub('V','v') },
+      icmp_type             => ->(x) { camel_case(x)},
+      edge_traversal_policy => ->(x) { camel_case(x)},
+      local_port            => ->(x) { "\"#{camel_case(x)}\"" },
+      remote_port           => ->(x) { "\"#{camel_case(x)}\"" },
+      local_address         => ->(x) { "\"#{camel_case(x)}\"" },
+      remote_address        => ->(x) { "\"#{camel_case(x)}\"" },
+      program               => ->(x) { x.gsub(/\\/, '\\\\') },
+      authentication        => ->(x) { camel_case(x) },
+      encryption            => ->(x) { camel_case(x) },
       #Those values should be transmitted as upcase to the powershell Module
-      :remote_machine        => ->(x) { x.upcase },
-      :local_user            => ->(x) { x.upcase },
-      :remote_user           => ->(x) { x.upcase },
+      remote_machine        => ->(x) { x.upcase },
+      local_user            => ->(x) { x.upcase },
+      remote_user           => ->(x) { x.upcase },
     }.fetch(key, lambda { |x| x })
   end
   def self.to_ruby(key)
     {
-      :enabled                => ->(x) { snake_case_sym(x) },
-      :action                 => ->(x) { snake_case_sym(x) },
-      :direction              => ->(x) { snake_case_sym(x) },
-      :interface_type         => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
-      :profile                => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
-      :protocol               => ->(x) { snake_case_sym(x) },
-      :icmp_type              => ->(x) { x ? x.downcase : x },
-      :edge_traversal_policy  => ->(x) { snake_case_sym(x) },
-      :program                => ->(x) { x.gsub(/\\\\/, '\\') },
-      :remote_port            => ->(x) { x.downcase },
-      :local_port             => ->(x) { x.downcase },
-      :remote_address         => ->(x) { x.downcase },
-      :local_address          => ->(x) { x.downcase },
-      :authentication         => ->(x) { x.downcase },
-      :encryption             => ->(x) { x.downcase },
-      :remote_machine         => ->(x) { x.downcase },
-      :local_user             => ->(x) { x.downcase },
-      :remote_user            => ->(x) { x.downcase },
+      enabled                => ->(x) { snake_case_sym(x) },
+      action                 => ->(x) { snake_case_sym(x) },
+      direction              => ->(x) { snake_case_sym(x) },
+      interface_type         => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
+      profile                => ->(x) { x.split(',').map{ |e| snake_case_sym(e.strip) } },
+      protocol               => ->(x) { snake_case_sym(x) },
+      icmp_type              => ->(x) { x ? x.downcase : x },
+      edge_traversal_policy  => ->(x) { snake_case_sym(x) },
+      program                => ->(x) { x.gsub(/\\\\/, '\\') },
+      remote_port            => ->(x) { x.downcase },
+      local_port             => ->(x) { x.downcase },
+      remote_address         => ->(x) { x.downcase },
+      local_address          => ->(x) { x.downcase },
+      authentication         => ->(x) { x.downcase },
+      encryption             => ->(x) { x.downcase },
+      remote_machine         => ->(x) { x.downcase },
+      local_user             => ->(x) { x.downcase },
+      remote_user            => ->(x) { x.downcase },
     }.fetch(key, lambda { |x| x })
   end
   # create a normalised key name by:
@@ -253,6 +253,7 @@ module PuppetX::WindowsFirewall
     Puppet.debug "Parsed windows firewall profile: #{profile}"
     profile
   end
+
   # Each rule is se
   def self.parse_global(input)
     globals = {}
