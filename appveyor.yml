@@ -2,7 +2,7 @@
 version: 1.1.x.{build}
 branches:
   only:
-    - master
+    - main
     - release
 skip_commits:
   message: /^\(?doc\)?.*/
@@ -14,9 +14,10 @@ init:
   - 'mkdir C:\ProgramData\PuppetLabs\hiera && exit 0'
   - 'mkdir C:\ProgramData\PuppetLabs\puppet\var && exit 0'
 environment:
+  SIMPLECOV: yes
   matrix:
     -
-      RUBY_VERSION: 24-x64
+      RUBY_VERSION: 25-x64
       CHECK: syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
     -
       PUPPET_GEM_VERSION: ~> 5.0
@@ -34,6 +35,31 @@ environment:
       PUPPET_GEM_VERSION: ~> 6.0
       RUBY_VERSION: 25-x64
       CHECK: parallel_spec
+    -
+      RUBY_VERSION: 25-x64
+      ACCEPTANCE: true
+      TARGET_HOST: localhost
+    -
+      RUBY_VERSION: 25-x64
+      ACCEPTANCE: true
+      TARGET_HOST: localhost
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+for:
+-
+  matrix:
+    only:
+      - ACCEPTANCE: yes
+  install:
+    - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+    - bundle install --jobs 4 --retry 2
+    - type Gemfile.lock
+  test_script:
+    - bundle exec puppet -V
+    - ruby -v
+    - gem -v
+    - bundle -v
+    - bundle exec rake spec_prep
+    - bundle exec rake litmus:acceptance:localhost
 matrix:
   fast_finish: true
 install:
@@ -50,7 +76,7 @@ test_script:
 notifications:
   - provider: Email
     to:
-      - nobody@nowhere.com
+      - alexandre.jardon@webalex.eu
     on_build_success: false
     on_build_failure: false
     on_build_status_changed: false
