@@ -78,7 +78,7 @@ test_script:
 notifications:
   - provider: Email
     to:
-      - nobody@nowhere.com
-    on_build_success: false
-    on_build_failure: false
-    on_build_status_changed: false
+      - alexandre.jardon@webalex.eu
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: true
