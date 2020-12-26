@@ -1,5 +1,4 @@
 require 'puppet_x'
-#require 'puppet_x/windows_firewall'
 require_relative '../../../puppet_x/windows_firewall'
 
 Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, :parent => Puppet::Provider) do
@@ -19,7 +18,7 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
 
   # firewall groups always exist we can only enable/disable them
   def exists?
-    #@property_hash[:ensure] == :present
+    # @property_hash[:ensure] == :present
     true
   end
 
