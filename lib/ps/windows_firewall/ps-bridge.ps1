@@ -322,7 +322,7 @@ function update {
         $params.Add("RemoteMachine", $RemoteMachine)
     }
 
-    if (Get-NetFirewallRule -DisplayName $name -erroraction 'silentlycontinue') {
+    if (Get-NetFirewallRule -Name $name -erroraction 'silentlycontinue') {
         Set-NetFirewallRule @params -ErrorAction Stop
     }
     else {
