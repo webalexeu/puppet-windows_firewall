@@ -137,6 +137,30 @@ module PuppetX
       Puppet.debug out
     end
 
+    def self.update_rule(resource)
+      Puppet.notice("(windows_firewall) updating rule '#{resource[:name]}'")
+
+      # `Name` is mandatory and also a `parameter` not a `property`
+      args = [ "-Name", resource[:name] ]
+      
+      resource.properties.reject { |property|
+        [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
+            property.value == :none
+      }.each { |property|
+        # All properties start `-`
+        property_name = "-#{camel_case(property.name)}"
+        property_value = to_ps(property.name).call(property.value)
+
+        # protocol can optionally specify type and code, other properties are set very simply
+        args << property_name
+        args << property_value
+      }
+      Puppet.debug "Updating firewall rule with args: #{args}"
+
+      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["update"] + args)
+      Puppet.debug out
+    end
+
     # Create a new firewall rule using powershell
     # @see https://docs.microsoft.com/en-us/powershell/module/netsecurity/new-netfirewallrule?view=win10-ps
     def self.create_rule(resource)

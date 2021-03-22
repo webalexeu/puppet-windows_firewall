@@ -222,6 +222,114 @@ function create {
     New-NetFirewallRule @params -ErrorAction Stop
 }
 
+function update {
+    write-host "Updating $($Name)..."
+    $params = @{
+        Name = $Name;
+    }
+    if ($DisplayName) {
+        $params.Add("NewDisplayName", $DisplayName)
+    }
+    if ($Enabled) {
+        $params.Add("Enabled", $Enabled)
+    }
+    if ($Description) {
+        $params.Add("Description", $Description)
+    }
+    if ($Action) {
+        $params.Add("Action", $Action)
+    }
+    #
+    # general optional params
+    #
+    if ($Direction) {
+        $params.Add("Direction", $Direction)
+    }
+    if ($EdgeTraversalPolicy) {
+        $params.Add("EdgeTraversalPolicy", $EdgeTraversalPolicy)
+    }
+    if ($Profile) {
+        $params.Add("Profile", $Profile)
+    }
+
+    #
+    # port filter
+    #
+    if ($Protocol) {
+        $params.Add("Protocol", $Protocol)
+    }
+    if ($ProtocolType) {
+        $params.Add("ProtocolType", $ProtocolType)
+    }
+    if ($ProtocolCode) {
+        $params.Add("ProtocolCode", $ProtocolCode)
+    }
+    if ($IcmpType) {
+        $params.Add("IcmpType", $IcmpType)
+    }
+    # `$LocalPort` and `$RemotePort` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split. The firewall GUI will sort any
+    # passed port ranges but the PS API does not
+    if ($LocalPort) {
+        $params.Add("LocalPort", ($LocalPort -split ','))
+    }
+    if ($RemotePort) {
+        $params.Add("RemotePort", ($RemotePort -split ','))
+    }
+
+    #
+    # Program filter
+    #
+    if ($Program) {
+        $params.Add("Program", $Program)
+    }
+
+    #
+    # Interface filter
+    #
+    if ($InterfaceType) {
+        $params.Add("InterfaceType", $InterfaceType)
+    }
+
+    # Host filter
+    if ($LocalAddress) {
+        $params.Add("LocalAddress", ($LocalAddress -split ','))
+    }
+    if ($RemoteAddress) {
+        $params.Add("remoteAddress", ($RemoteAddress -split ','))
+    }
+
+    # Service Filter
+    if ($Service) {
+        $params.Add("Service", $Service)
+    }
+
+    # Security Filter
+    if ($Authentication) {
+        $params.Add("Authentication", $Authentication)
+    }
+    if ($Encryption) {
+        $params.Add("Encryption", $Encryption)
+    }
+    if ($LocalUser) {
+        $params.Add("LocalUser", $LocalUser)
+    }
+    if ($RemoteUser) {
+        $params.Add("RemoteUser", $RemoteUser)
+    }
+    if ($RemoteMachine) {
+        $params.Add("RemoteMachine", $RemoteMachine)
+    }
+
+    if (Get-NetFirewallRule -Name $name -erroraction 'silentlycontinue') {
+        Set-NetFirewallRule @params -ErrorAction Stop
+    }
+    else {
+        throw "We were told to update firewall rule '$($name)' but it does not exist"
+    }
+}
+
 switch ($Target) {
     "show" {
         show
@@ -231,6 +339,9 @@ switch ($Target) {
     }
     "create" {
         create
+    }
+    "update" {
+        update
     }
     default {
         throw "invalid target: $($Target)"

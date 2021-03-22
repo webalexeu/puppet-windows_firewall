@@ -1,5 +1,4 @@
 require 'puppet_x'
-#require 'puppet_x/windows_firewall'
 require_relative '../../../puppet_x/windows_firewall_ipsec'
 
 Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_rule, :parent => Puppet::Provider) do
@@ -20,12 +19,13 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
     @property_hash[:ensure] == :present
   end
 
-  # all work done in `flush()` method
   def create()
+    PuppetX::WindowsFirewallIPSec.create_rule @resource
   end
 
-  # all work done in `flush()` method
   def destroy()
+    # Delete only require firewall rule name to process
+    PuppetX::WindowsFirewallIPSec.delete_rule @resource[:name]
   end
 
   def self.instances
@@ -33,18 +33,11 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
   end
 
   def flush
-    # @property_hash contains the `IS` values (thanks Gary!)... For new rules there is no `IS`, there is only the
-    # `SHOULD`. The setter methods from `mk_resource_methods` (or manually created) won't be called either. You have
-    # to inspect @resource instead
-
-    # we are flushing an existing resource to either update it or ensure=>absent it
-    # therefore, delete this rule now and create a new one if needed
-    if @property_hash[:ensure] == :present
-      PuppetX::WindowsFirewallIPSec.delete_rule @resource[:name]
-    end
-
-    if @resource[:ensure] == :present
-      PuppetX::WindowsFirewallIPSec.create_rule @resource
+    # Update rule
+    # Only if IS value ensure == SHOULD value ensure
+    # @property_hash contains the IS values (thanks Gary!). For new rules there is no IS, there is only the SHOULD
+    if @property_hash[:ensure] == @resource[:ensure]
+      PuppetX::WindowsFirewallIPSec.update_rule @resource
     end
   end
 

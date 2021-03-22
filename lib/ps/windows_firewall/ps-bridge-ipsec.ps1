@@ -181,6 +181,115 @@ function create {
     New-NetIPSecRule @params -ErrorAction Stop
 }
 
+function update {
+    write-host "Updating $($Name)..."
+    $params = @{
+        Name        = $Name;
+    }
+    if ($DisplayName) {
+        $params.Add("NewDisplayName", $DisplayName)
+    }
+    if ($Enabled) {
+        $params.Add("Enabled", $Enabled)
+    }
+    if ($Description) {
+        $params.Add("Description", $Description)
+    }
+    if ($Action) {
+        $params.Add("Action", $Action)
+    }
+    #
+    # general optional params
+    #
+
+    if ($Profile) {
+        $params.Add("Profile", $Profile)
+    }
+
+    #
+    # port filter
+    #
+    if ($Protocol) {
+        $params.Add("Protocol", $Protocol)
+    }
+    if ($Mode) {
+        $params.Add("Mode", $Mode)
+    }
+
+    # `$LocalPort` and `$RemotePort` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split. The firewall GUI will sort any
+    # passed port ranges but the PS API does not
+    if ($LocalPort) {
+        $params.Add("LocalPort", ($LocalPort -split ','))
+    }
+    if ($RemotePort) {
+        $params.Add("RemotePort", ($RemotePort -split ','))
+    }
+
+    #
+    # Interface filter
+    #
+    if ($InterfaceType) {
+        $params.Add("InterfaceType", $InterfaceType)
+    }
+
+    # Host filter
+    if ($LocalAddress) {
+        $params.Add("LocalAddress", ($LocalAddress -split ','))
+    }
+    if ($RemoteAddress) {
+        $params.Add("remoteAddress", ($RemoteAddress -split ','))
+    }
+    if ($InboundSecurity) {
+        $params.Add("InboundSecurity", $InboundSecurity)
+    }
+    if ($OutboundSecurity) {
+        $params.Add("OutboundSecurity", $OutboundSecurity)
+    }
+    #PhaseAuthSet is case sensitive
+    if ($Phase1AuthSet -eq 'Computerkerberos') {
+        $params.Add("Phase1AuthSet", 'ComputerKerberos')
+    }
+    elseif ($Phase1AuthSet) {
+        $params.Add("Phase1AuthSet", $Phase1AuthSet)
+    }
+    if ($Phase2AuthSet -eq 'Userkerberos') {
+        $params.Add("Phase2AuthSet", 'UserKerberos')
+    }
+    elseif ($Phase2AuthSet) {
+        $params.Add("Phase2AuthSet", $Phase2AuthSet)
+    }
+
+    #Create PhaseAuthSet if doesn't exist (Exist by default on GUI but not on CORE)
+    if ($Phase1AuthSet -eq 'Computerkerberos') {
+        if (!(Get-NetIPsecPhase1AuthSet -Name 'ComputerKerberos' -erroraction 'silentlycontinue')) {
+            $mkerbauthprop = New-NetIPsecAuthProposal -Machine -Kerberos
+            New-NetIPsecPhase1AuthSet -Name 'ComputerKerberos' -DisplayName 'ComputerKerberos' -Proposal $mkerbauthprop
+        }
+    }
+    elseif ($Phase1AuthSet -eq 'Anonymous') {
+        if (!(Get-NetIPsecPhase1AuthSet -Name 'Anonymous' -erroraction 'silentlycontinue')) {
+            $anonyauthprop = New-NetIPsecAuthProposal -Anonymous
+            New-NetIPsecPhase1AuthSet -Name 'Anonymous' -DisplayName 'Anonymous' -Proposal $anonyauthprop
+        }
+    }
+    if ($Phase2AuthSet -eq 'Userkerberos') {
+        #Create Phase1AuthSet if doesn't exist (Exist by default on GUI but not on CORE)
+        if (!(Get-NetIPsecPhase2AuthSet -Name 'Userkerberos' -erroraction 'silentlycontinue')) {
+            $ukerbauthprop = New-NetIPsecAuthProposal -User -Kerberos
+            New-NetIPsecPhase2AuthSet -Name 'Userkerberos' -DisplayName 'Userkerberos' -Proposal $ukerbauthprop
+        }
+    }
+
+    if (Get-NetIPSecRule -Name $name -erroraction 'silentlycontinue') {
+        Set-NetIPSecRule @params -ErrorAction Stop
+    }
+    else {
+        throw "We were told to update firewall rule '$($name)' but it does not exist"
+    }
+}
+
 function delete {
     write-host "Deleting $($Name)..."
 
@@ -213,6 +322,9 @@ switch ($Target) {
     }
     "create" {
         create
+    }
+    "update" {
+        update
     }
     default {
         throw "invalid target: $($Target)"
