@@ -3,7 +3,21 @@
 All notable changes to this project will be documented in this file.
 
 
-## Release 1.0.0 (2021-03-20)
+## Release 1.0.1 (2021-03-23)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.0.0...v1.0.1)
+
+**Features**
+
+- Removing support for: 2008 Server/2008R2 Server/2012 Server/Windows 7
+
+**Bugfixes**
+
+- [Update of rule not working when using square brackets in the name](https://github.com/webalexeu/puppet-windows_firewall/issues/6)
+
+**Known Issues**
+
+## Release 1.0.0 (2021-03-22)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v0.2.0...v1.0.0)
 
