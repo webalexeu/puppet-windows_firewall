@@ -158,12 +158,16 @@ module PuppetX
       sids = []
       value.split(',').sort.each do |name|
         name.strip!
+        #ACE is first character
+        ace = name.chr.upcase
+        #Remove first 2 characters
+        name = name[2..-1]
         sid = Puppet::Util::Windows::SID.name_to_sid(name)
         #If resolution failed, thrown a warning
         if sid.nil?
           warn("\"#{value}\" does not exist")
         else
-          cur_sid = '(A;;CC;;;' + sid + ')'
+          cur_sid = '('+ ace +';;CC;;;' + sid + ')'
         end
         sids << cur_sid unless cur_sid.nil?
       end
@@ -181,17 +185,19 @@ module PuppetX
       value.delete! '()'
       names = []
       value.split(',').sort.each do |sid|
+        #ACE is first character
+        ace = sid.chr.upcase
         #Delete prefix on each user
-        sid.delete_prefix! 'A;;CC;;;'
+        sid.delete_prefix! ace + ';;CC;;;'
         sid.strip!
         name = Puppet::Util::Windows::SID.sid_to_name(sid)
         #If resolution failed, return SID
         if name.nil?
-          cur_name = sid
+          cur_name = ace + ':' + sid.downcase!
         else
-          cur_name = name
+          cur_name = ace + ':' + name.downcase!
         end
-        names << cur_name.downcase! unless cur_name.nil?
+        names << cur_name unless cur_name.nil?
       end
       names.sort.join(',')
     end
