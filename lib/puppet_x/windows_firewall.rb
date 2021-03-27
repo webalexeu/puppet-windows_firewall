@@ -146,22 +146,18 @@ module PuppetX
         :local_address          => lambda { |x| x.downcase },
         :authentication         => lambda { |x| x.downcase },
         :encryption             => lambda { |x| x.downcase },
-        :remote_machine         => lambda { |x| convert_from_sddl(x) },
-        :local_user             => lambda { |x| convert_from_sddl(x) },
-        :remote_user            => lambda { |x| convert_from_sddl(x) },
+        :remote_machine         => lambda { |x| convert_from_sddl(x)},
+        :local_user             => lambda { |x| convert_from_sddl(x)},
+        :remote_user            => lambda { |x| convert_from_sddl(x)},
       }.fetch(key, lambda { |x| x })
     end
 
     # Convert name to SID and structure result as SDDL value
-    def self.convert_to_sddl(value)
+    def self.convert_to_sddl_acl(value,ace)
       # we need to convert users to sids first
       sids = []
       value.split(',').sort.each do |name|
         name.strip!
-        #ACE is first character
-        ace = name.chr.upcase
-        #Remove first 2 characters
-        name = name[2..-1]
         sid = Puppet::Util::Windows::SID.name_to_sid(name)
         #If resolution failed, thrown a warning
         if sid.nil?
@@ -171,9 +167,14 @@ module PuppetX
         end
         sids << cur_sid unless cur_sid.nil?
       end
-      'O:LSD:' + sids.sort.join('')
+      sids.sort.join('')
     end
 
+    # Convert name to SID and structure result as SDDL value
+    def self.convert_to_sddl(value)
+      'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
+    end
+  
     # Parse SDDL value and convert SID to name
     def self.convert_from_sddl(value)
       # we need to convert users to sids first
@@ -183,7 +184,9 @@ module PuppetX
       value.gsub! ')(', ','
       # Remove '()'
       value.delete! '()'
-      names = []
+      names = {}
+      allow = []
+      deny = []
       value.split(',').sort.each do |sid|
         #ACE is first character
         ace = sid.chr.upcase
@@ -193,13 +196,24 @@ module PuppetX
         name = Puppet::Util::Windows::SID.sid_to_name(sid)
         #If resolution failed, return SID
         if name.nil?
-          cur_name = ace + ':' + sid.downcase!
+          cur_name = sid.downcase!
         else
-          cur_name = ace + ':' + name.downcase!
+          cur_name = name.downcase!
         end
-        names << cur_name unless cur_name.nil?
+        case ace
+          when 'A'
+            allow << cur_name unless cur_name.nil?
+          when 'D'
+            deny << cur_name unless cur_name.nil?
+        end
       end
-      names.sort.join(',')
+      if !allow.empty?
+        names['allow'] = allow.sort.join(',')
+      end
+      if !deny.empty?
+        names['block'] = deny.sort.join(',')
+      end
+      names
     end
 
     # create a normalised key name by:
