@@ -160,8 +160,8 @@ windows_firewall_rule { "puppet - open port in specific profiles":
   profile          => ["private", "domain"],
   local_port       => "666",
   authentication   => "required",
-  local_user       => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-9876)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1234)",
-  remote_machine   => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-4321)"
+  local_user       => {'allow' => 'contoso\\group1,contoso\\group2'},
+  remote_machine   => {'allow' => 'contoso\\group1,contoso\\group2'}
 }
 ```
 #### Manage encryption
@@ -175,9 +175,12 @@ windows_firewall_rule { "puppet - open port in specific profiles":
   local_port     => "666",
   authentication => "required",
   encryption     => "required",
-  local_user     => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1829)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1234)",
-  remote_user    => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-1829)(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-5678)",
-  remote_machine => "d:(a;;cc;;;s-1-5-21-2726998060-367084411-2883369437-4321)"
+  local_user     => {'allow' => 'contoso\\group1',
+                     'block' => 'contoso\\group2'},
+  remote_user    => {'allow' => 'contoso\\group1',
+                     'block' => 'contoso\\group2'},
+  remote_machine => {'allow' => 'contoso\\group1',
+                     'block' => 'contoso\\group2'}
 }
 ```
 

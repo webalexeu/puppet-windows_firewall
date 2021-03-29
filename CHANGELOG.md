@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.1.0 (2021-03-29)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.0.1...v1.1.0)
+
+**Features**
+
+- local_user, remote_user and remote_machine are now based on user/group name. Automatic NAME to SID lookup is performed in order to generate the correct SDDL string required for those variables (Those variables are hash variables. Previously string variables)
+
+**Bugfixes**
+
+**Known Issues**
 
 ## Release 1.0.1 (2021-03-23)
 

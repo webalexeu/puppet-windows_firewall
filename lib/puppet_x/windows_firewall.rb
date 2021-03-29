@@ -163,6 +163,7 @@ module PuppetX
         if sid.nil?
           warn("\"#{value}\" does not exist")
         else
+          #Generate structured SSDL ACL
           cur_sid = '('+ ace +';;CC;;;' + sid + ')'
         end
         sids << cur_sid unless cur_sid.nil?
@@ -177,43 +178,49 @@ module PuppetX
   
     # Parse SDDL value and convert SID to name
     def self.convert_from_sddl(value)
-      # we need to convert users to sids first
-      # Delete prefix
-      value.delete_prefix! 'O:LSD:'
-      # Change ')(' to ',' to have a proper delimiter
-      value.gsub! ')(', ','
-      # Remove '()'
-      value.delete! '()'
-      names = {}
-      allow = []
-      deny = []
-      value.split(',').sort.each do |sid|
-        #ACE is first character
-        ace = sid.chr.upcase
-        #Delete prefix on each user
-        sid.delete_prefix! ace + ';;CC;;;'
-        sid.strip!
-        name = Puppet::Util::Windows::SID.sid_to_name(sid)
-        #If resolution failed, return SID
-        if name.nil?
-          cur_name = sid.downcase!
-        else
-          cur_name = name.downcase!
+      if value == 'Any'
+        #Return value in lowercase
+        value.downcase!
+      else
+        # we need to convert users to sids first
+        # Delete prefix
+        value.delete_prefix! 'O:LSD:'
+        # Change ')(' to ',' to have a proper delimiter
+        value.gsub! ')(', ','
+        # Remove '()'
+        value.delete! '()'
+        #Define variables
+        names = {}
+        allow = []
+        deny = []
+        value.split(',').sort.each do |sid|
+          #ACE is first character
+          ace = sid.chr.upcase
+          #Delete prefix on each user
+          sid.delete_prefix! ace + ';;CC;;;'
+          sid.strip!
+          name = Puppet::Util::Windows::SID.sid_to_name(sid)
+          #If resolution failed, return SID
+          if name.nil?
+            cur_name = sid.downcase!
+          else
+            cur_name = name.downcase!
+          end
+          case ace
+            when 'A'
+              allow << cur_name unless cur_name.nil?
+            when 'D'
+              deny << cur_name unless cur_name.nil?
+          end
         end
-        case ace
-          when 'A'
-            allow << cur_name unless cur_name.nil?
-          when 'D'
-            deny << cur_name unless cur_name.nil?
+        if !allow.empty?
+          names['allow'] = allow.sort.join(',')
         end
+        if !deny.empty?
+          names['block'] = deny.sort.join(',')
+        end
+        names
       end
-      if !allow.empty?
-        names['allow'] = allow.sort.join(',')
-      end
-      if !deny.empty?
-        names['block'] = deny.sort.join(',')
-      end
-      names
     end
 
     # create a normalised key name by:
