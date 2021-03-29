@@ -1,5 +1,7 @@
 require 'puppet_x'
 require 'pp'
+require 'puppet/util'
+require 'puppet/util/windows'
 module PuppetX
   module WindowsFirewall
 
@@ -74,8 +76,6 @@ module PuppetX
       script
     end
 
-
-
     # convert a puppet type key name to the argument to use for `netsh` command
     def self.global_argument_lookup(key)
       {
@@ -123,10 +123,9 @@ module PuppetX
         :program               => lambda { |x| x.gsub(/\\/, '\\\\')},
         :authentication        => lambda { |x| camel_case(x)},
         :encryption            => lambda { |x| camel_case(x)},
-        #Those values should be transmitted as upcase to the powershell Module
-        :remote_machine        => lambda { |x| x.upcase},
-        :local_user            => lambda { |x| x.upcase},
-        :remote_user           => lambda { |x| x.upcase},
+        :remote_machine        => lambda { |x| convert_to_sddl(x)},
+        :local_user            => lambda { |x| convert_to_sddl(x)},
+        :remote_user           => lambda { |x| convert_to_sddl(x)},
       }.fetch(key, lambda { |x| x })
     end
 
@@ -147,10 +146,81 @@ module PuppetX
         :local_address          => lambda { |x| x.downcase },
         :authentication         => lambda { |x| x.downcase },
         :encryption             => lambda { |x| x.downcase },
-        :remote_machine         => lambda { |x| x.downcase },
-        :local_user             => lambda { |x| x.downcase },
-        :remote_user            => lambda { |x| x.downcase },
+        :remote_machine         => lambda { |x| convert_from_sddl(x)},
+        :local_user             => lambda { |x| convert_from_sddl(x)},
+        :remote_user            => lambda { |x| convert_from_sddl(x)},
       }.fetch(key, lambda { |x| x })
+    end
+
+    # Convert name to SID and structure result as SDDL value
+    def self.convert_to_sddl_acl(value,ace)
+      # we need to convert users to sids first
+      sids = []
+      value.split(',').sort.each do |name|
+        name.strip!
+        sid = Puppet::Util::Windows::SID.name_to_sid(name)
+        #If resolution failed, thrown a warning
+        if sid.nil?
+          warn("\"#{value}\" does not exist")
+        else
+          #Generate structured SSDL ACL
+          cur_sid = '('+ ace +';;CC;;;' + sid + ')'
+        end
+        sids << cur_sid unless cur_sid.nil?
+      end
+      sids.sort.join('')
+    end
+
+    # Convert name to SID and structure result as SDDL value
+    def self.convert_to_sddl(value)
+      'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
+    end
+  
+    # Parse SDDL value and convert SID to name
+    def self.convert_from_sddl(value)
+      if value == 'Any'
+        #Return value in lowercase
+        value.downcase!
+      else
+        # we need to convert users to sids first
+        # Delete prefix
+        value.delete_prefix! 'O:LSD:'
+        # Change ')(' to ',' to have a proper delimiter
+        value.gsub! ')(', ','
+        # Remove '()'
+        value.delete! '()'
+        #Define variables
+        names = {}
+        allow = []
+        deny = []
+        value.split(',').sort.each do |sid|
+          #ACE is first character
+          ace = sid.chr.upcase
+          #Delete prefix on each user
+          sid.delete_prefix! ace + ';;CC;;;'
+          sid.strip!
+          name = Puppet::Util::Windows::SID.sid_to_name(sid)
+          #If resolution failed, return SID
+          if name.nil?
+            cur_name = sid.downcase!
+          else
+            cur_name = name.downcase!
+          end
+          case ace
+            when 'A'
+              allow << cur_name unless cur_name.nil?
+            when 'D'
+              deny << cur_name unless cur_name.nil?
+          end
+        end
+        if !allow.empty?
+          names['allow'] = allow.sort.join(',')
+        end
+        if !deny.empty?
+          names['block'] = deny.sort.join(',')
+        end
+        names
+      end
     end
 
     # create a normalised key name by:
