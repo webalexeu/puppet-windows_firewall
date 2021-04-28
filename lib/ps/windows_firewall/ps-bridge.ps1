@@ -53,31 +53,43 @@ function Convert-IpAddressToMaskLength([string] $Address)
   }   
 }
 
-# Lookup select firewall rules using powershell. This is needed to resolve names that are missing
-# from netsh output
+# Lookup select firewall rules using powershell.
 function Show {
-
     $rules = New-Object System.Collections.ArrayList
-    Get-NetFirewallRule | ForEach-Object {
 
-        $af = (Get-NetFirewallAddressFilter -AssociatedNetFirewallRule $_)[0]
-        $appf = (Get-NetFirewallApplicationFilter -AssociatedNetFirewallRule $_)[0]
-        $pf = (Get-NetFirewallPortFilter -AssociatedNetFirewallRule $_)[0]
-        $if = (Get-NetFirewallInterfaceTypeFilter -AssociatedNetFirewallRule $_)[0]
-        $sf = (Get-NetFirewallServiceFilter -AssociatedNetFirewallRule $_)[0]
-        $secf = (Get-NetFirewallSecurityFilter -AssociatedNetFirewallRule $_)[0]
+    # Firewall rules query (InstanceID is the unique key)
+    $firewallRules = Get-NetFirewallRule | Select-Object InstanceID, Name, DisplayName, Description, Enabled, Action, Direction, EdgeTraversalPolicy, Profile, DisplayGroup
+    # Querying Firewall rules filter in one query (Parsing for each rule is cpu/time consuming)
+    $af_rules = Get-NetFirewallAddressFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, LocalAddress, RemoteAddress
+    $appf_rules = Get-NetFirewallApplicationFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Program
+    $pf_rules = Get-NetFirewallPortFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, LocalPort, RemotePort
+    $if_rules = Get-NetFirewallInterfaceTypeFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, InterfaceType
+    $sf_rules = Get-NetFirewallServiceFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Service
+    $secf_rules = Get-NetFirewallSecurityFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Authentication, Encryption, LocalUser, RemoteUser, RemoteMachine
 
+    # Parse all firewall rules (Using foreach to improve performance)
+    ForEach ($firewallRule in $firewallRules) {
+        ## Parsing using foreach to improve performance
+        $InstanceID=$firewallRule.InstanceID
+        ForEach ($af_rule in $af_rules) {if ($af_rule.InstanceID -eq $InstanceID) {$af=$af_rule}}
+        ForEach ($appf_rule in $appf_rules) {if ($appf_rule.InstanceID -eq $InstanceID) {$appf=$appf_rule}}
+        ForEach ($pf_rule in $pf_rules) {if ($pf_rule.InstanceID -eq $InstanceID) {$pf=$pf_rule}}
+        ForEach ($if_rule in $if_rules) {if ($if_rule.InstanceID -eq $InstanceID) {$if=$if_rule}}
+        ForEach ($sf_rule in $sf_rules) {if ($sf_rule.InstanceID -eq $InstanceID) {$sf=$sf_rule}}
+        ForEach ($secf_rule in $secf_rules) {if ($secf_rule.InstanceID -eq $InstanceID) {$secf=$secf_rule}}
+
+        # Creating Rule Hash
         $rules.Add(@{
-                Name                = $_.Name
-                DisplayName         = $_.DisplayName
-                Description         = $_.Description
-                Enabled             = $_.Enabled.toString()
-                Action              = $_.Action.toString()
-                Direction           = $_.Direction.toString()
-                EdgeTraversalPolicy = $_.EdgeTraversalPolicy.toString()
-                Profile             = $_.Profile.toString()
-                DisplayGroup        = $_.DisplayGroup
-                # Address Filter
+                Name                = $firewallRule.Name
+                DisplayName         = $firewallRule.DisplayName
+                Description         = $firewallRule.Description
+                Enabled             = $firewallRule.Enabled.toString()
+                Action              = $firewallRule.Action.toString()
+                Direction           = $firewallRule.Direction.toString()
+                EdgeTraversalPolicy = $firewallRule.EdgeTraversalPolicy.toString()
+                Profile             = $firewallRule.Profile.toString()
+                DisplayGroup        = $firewallRule.DisplayGroup
+                # Address Filter (Newer powershell versions return a hash)
                 LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_}) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
                 RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_}) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
                 # Port Filter (Newer powershell versions return a hash)

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.0 (2021-04-28)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.1.0...v1.2.0)
+
+**Features**
+
+- Rewrite rules query (show function) to improve speed processing
+
+**Bugfixes**
+
+- [Show function execution time issue](https://github.com/webalexeu/puppet-windows_firewall/issues/9)
+
+**Known Issues**
+
 ## Release 1.1.0 (2021-03-29)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.0.1...v1.1.0)
@@ -13,6 +27,8 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+- Show function execution time issue
 
 ## Release 1.0.1 (2021-03-23)
 
@@ -39,6 +55,8 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+- Update of rule not working when using square brackets in the name
 
 ## Release 0.2.0 (2020-12-18)
 
