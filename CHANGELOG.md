@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.2 (2021-04-29)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.1...v1.2.2)
+
+**Features**
+
+- Run Firewall rules filter queries only if Firewall IPSec Rules exists (ipsec show function) to improve speed processing
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.2.1 (2021-04-29)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.0...v1.2.1)

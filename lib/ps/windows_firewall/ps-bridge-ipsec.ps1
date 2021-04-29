@@ -49,10 +49,13 @@ function show {
 
     # Firewall IPsecrules query (InstanceID is the unique key)
     $firewallRules = Get-NetIPsecRule | Select-Object InstanceID, Name, DisplayName, Description, Enabled, Profile, DisplayGroup, Mode, InboundSecurity, OutboundSecurity, Phase1AuthSet, Phase2AuthSet
-    # Querying Firewall rules filter in one query (Parsing for each rule is cpu/time consuming)
-    $af_rules = Get-NetFirewallAddressFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, LocalAddress, RemoteAddress
-    $pf_rules = Get-NetFirewallPortFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, LocalPort, RemotePort, Protocol
-    $if_rules = Get-NetFirewallInterfaceTypeFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, InterfaceType
+    # Run Firewall rules filter queries only if Firewall IPSec Rules exists (Until both scripts are merged in one single PowerShell script to manage everything)
+    if ($firewallRules) {
+        # Querying Firewall rules filter in one query (Parsing for each rule is cpu/time consuming)
+        $af_rules = Get-NetFirewallAddressFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, LocalAddress, RemoteAddress
+        $pf_rules = Get-NetFirewallPortFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, LocalPort, RemotePort, Protocol
+        $if_rules = Get-NetFirewallInterfaceTypeFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|ConSecRule|*'} | Select-Object InstanceID, InterfaceType
+    }
 
     # Parse all firewall rules (Using foreach to improve performance)
     ForEach ($firewallRule in $firewallRules) {
