@@ -62,7 +62,7 @@ function Show {
     # Querying Firewall rules filter in one query (Parsing for each rule is cpu/time consuming)
     $af_rules = Get-NetFirewallAddressFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, LocalAddress, RemoteAddress
     $appf_rules = Get-NetFirewallApplicationFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Program
-    $pf_rules = Get-NetFirewallPortFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, LocalPort, RemotePort
+    $pf_rules = Get-NetFirewallPortFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, LocalPort, RemotePort, Protocol, IcmpType
     $if_rules = Get-NetFirewallInterfaceTypeFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, InterfaceType
     $sf_rules = Get-NetFirewallServiceFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Service
     $secf_rules = Get-NetFirewallSecurityFilter | Where-Object {$_.CreationClassName -like 'MSFT|FW|FirewallRule|*'} | Select-Object InstanceID, Authentication, Encryption, LocalUser, RemoteUser, RemoteMachine
