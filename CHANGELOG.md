@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.1 (2021-04-29)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.0...v1.2.1)
+
+**Features**
+
+**Bugfixes**
+
+- [Undefined method error](https://github.com/webalexeu/puppet-windows_firewall/issues/11)
+
+**Known Issues**
+
 ## Release 1.2.0 (2021-04-28)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.1.0...v1.2.0)
@@ -15,6 +27,8 @@ All notable changes to this project will be documented in this file.
 - [Show function execution time issue](https://github.com/webalexeu/puppet-windows_firewall/issues/9)
 
 **Known Issues**
+
+- Undefined method error
 
 ## Release 1.1.0 (2021-03-29)
 
