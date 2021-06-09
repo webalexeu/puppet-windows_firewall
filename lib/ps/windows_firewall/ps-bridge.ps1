@@ -90,8 +90,8 @@ function Show {
                 Profile             = $firewallRule.Profile.toString()
                 DisplayGroup        = $firewallRule.DisplayGroup
                 # Address Filter (Newer powershell versions return a hash)
-                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | Sort-Object | ForEach-Object {Convert-IpAddressToMaskLength $_}) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
-                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | Sort-Object | ForEach-Object {Convert-IpAddressToMaskLength $_}) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
+                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
+                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
                 # Port Filter (Newer powershell versions return a hash)
                 LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort -join "," } else { $pf.LocalPort }
                 RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort -join "," } else { $pf.RemotePort }
