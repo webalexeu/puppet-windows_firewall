@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.3 (2021-06-09)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.2...v1.2.3)
+
+**Features**
+
+**Bugfixes**
+
+- [LocalAddress and RemoteAddress are not sorted](https://github.com/webalexeu/puppet-windows_firewall/issues/14)
+
+**Known Issues**
+
 ## Release 1.2.2 (2021-04-29)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.1...v1.2.2)
@@ -13,6 +25,8 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+- LocalAddress and RemoteAddress are not sorted
 
 ## Release 1.2.1 (2021-04-29)
 
