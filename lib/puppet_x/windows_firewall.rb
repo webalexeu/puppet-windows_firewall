@@ -171,9 +171,13 @@ module PuppetX
       sids.sort.join('')
     end
 
-    # Convert name to SID and structure result as SDDL value
+    # Convert name to SID and structure result as SDDL value (Only if value is not any)
     def self.convert_to_sddl(value)
-      'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
+      if value.to_s == 'any'
+        value
+      else
+        'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
+      end
     end
   
     # Parse SDDL value and convert SID to name

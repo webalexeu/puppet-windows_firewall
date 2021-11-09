@@ -2,7 +2,6 @@
     [String] $Target,
     [String] $Name,
     [String] $DisplayName,
-    [String] $Description,
     $Enabled,
     $Action,
     [String] $Protocol,
@@ -232,19 +231,12 @@ function update {
     $Name = $name.replace(']', '`]').replace('[', '`[')
 
     $params = @{
+        Enabled        = $Enabled;
+        NewDisplayName = $DisplayName;
+        Description    = $Description;
+        Action         = $Action;
     }
-    if ($DisplayName) {
-        $params.Add("NewDisplayName", $DisplayName)
-    }
-    if ($Enabled) {
-        $params.Add("Enabled", $Enabled)
-    }
-    if ($Description) {
-        $params.Add("Description", $Description)
-    }
-    if ($Action) {
-        $params.Add("Action", $Action)
-    }
+
     #
     # general optional params
     #
