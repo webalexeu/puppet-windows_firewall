@@ -120,7 +120,7 @@ module PuppetX
         :remote_port           => lambda { |x| "\"#{camel_case(x)}\""},
         :local_address         => lambda { |x| "\"#{camel_case(x)}\""},
         :remote_address        => lambda { |x| "\"#{camel_case(x)}\""},
-        :program               => lambda { |x| x.gsub(/\\/, '\\\\')},
+        :program               => lambda { |x| x.to_s == 'any' ? x : x.gsub(/\\/, '\\\\') },
         :authentication        => lambda { |x| camel_case(x)},
         :encryption            => lambda { |x| camel_case(x)},
         :remote_machine        => lambda { |x| convert_to_sddl(x)},
@@ -139,7 +139,7 @@ module PuppetX
         :protocol               => lambda { |x| snake_case_sym(x)},
         :icmp_type              => lambda { |x| x ? x.downcase : x },
         :edge_traversal_policy  => lambda { |x| snake_case_sym(x)},
-        :program                => lambda { |x| x.gsub(/\\\\/, '\\')},
+        :program                => lambda { |x| x.to_s == 'Any' ? x.downcase : x.gsub(/\\\\/, '\\')},
         :remote_port            => lambda { |x| x.downcase },
         :local_port             => lambda { |x| x.downcase },
         :remote_address         => lambda { |x| x.downcase },
@@ -149,6 +149,7 @@ module PuppetX
         :remote_machine         => lambda { |x| convert_from_sddl(x)},
         :local_user             => lambda { |x| convert_from_sddl(x)},
         :remote_user            => lambda { |x| convert_from_sddl(x)},
+        :service                => lambda { |x| x.downcase },
       }.fetch(key, lambda { |x| x })
     end
 

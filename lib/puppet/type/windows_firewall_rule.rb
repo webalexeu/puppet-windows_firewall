@@ -6,9 +6,8 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   ensurable do
     desc "How to ensure this firewall rule (`present` or `absent`)"
 
+    defaultto :present
     defaultvalues
-
-    defaultto(:present)
 
     # we need the insync? for puppet to make right decision on whether to run the provider or not - if we leave it up
     # to provider.exists? then puppet resource command broken for files that are mismatched, they always show as ensure
@@ -19,28 +18,40 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
   end
 
-  # Failing when displaying puppet resource (To be checked !)
+  # Resource validation
   validate do
-    self.fail 'direction is a required attribute' if self[:direction].nil? && !defined? self.direction
-    #fail('protocol is a required attribute') if self[:protocol].nil?
-    #fail('action is a required attribute') if self[:action].nil?
+    # Only if we ensure that resource should be present
+    if self[:ensure] == :present
+      fail ('direction is a required attribute') if self[:direction].nil?
+      fail('protocol is a required attribute') if self[:protocol].nil?
+      fail('action is a required attribute') if self[:action].nil?
+    end
   end
 
   newproperty(:enabled) do
     desc "Whether the rule is enabled (`true` or `false`)"
     newvalues(:true, :false)
-
     defaultto :true
   end
 
   newproperty(:display_name) do
     desc "Display name for this rule"
     defaultto { @resource[:name] }
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
   end
 
   newproperty(:description) do
     desc "Description of this rule"
-    #defaultto ''
+    defaultto ''
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
   end
 
   newproperty(:direction) do
@@ -66,7 +77,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       is.sort == should.sort
     end
 
-    #defaultto :any
+    defaultto :any
   end
 
   newproperty(:display_group) do
@@ -157,7 +168,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       "#{is}".downcase == "#{should}".downcase
     end
 
-    #defaultto :any
+    defaultto :any
   end
 
   newproperty(:interface_type, :array_matching=>:all) do
@@ -178,7 +189,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       "#{is}".downcase == "#{should}".downcase
     end
 
-    #defaultto :any
+    defaultto :any
   end
 
   newproperty(:authentication) do
