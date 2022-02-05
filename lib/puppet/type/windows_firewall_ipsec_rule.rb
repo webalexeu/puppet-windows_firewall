@@ -6,9 +6,8 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   ensurable do
     desc "How to ensure this firewall rule (`present` or `absent`)"
 
+    defaultto :present
     defaultvalues
-
-    defaultto(:present)
 
     # we need the insync? for puppet to make right decision on whether to run the provider or not - if we leave it up
     # to provider.exists? then puppet resource command broken for files that are mismatched, they always show as ensure
@@ -16,22 +15,42 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       (is == :present && should == :present) || (is == :absent && should == :absent)
     end
+
+  end
+
+  # Resource validation
+  validate do
+    # Only if we ensure that resource should be present
+    if self[:ensure] == :present
+      fail('mode is a required attribute') if self[:mode].nil?
+      fail('protocol is a required attribute') if self[:protocol].nil?
+    end
   end
 
   newproperty(:enabled) do
     desc "This parameter specifies that the rule object is administratively enabled or administratively disabled (`true` or `false`)"
     newvalues(:true, :false)
-
     defaultto :true
   end
 
   newproperty(:display_name) do
     desc "Specifies the localized, user-facing name of the firewall rule being created"
     defaultto { @resource[:name] }
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
   end
 
   newproperty(:description) do
     desc "This parameter provides information about the firewall rule"
+    defaultto ''
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
   end
 
   newproperty(:profile, :array_matching=>:all) do
@@ -42,6 +61,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       is.sort == should.sort
     end
+    defaultto :any
   end
 
   newproperty(:display_group) do
@@ -49,6 +69,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     validate do |value|
       fail("grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group")
     end
+    defaultto :any
   end
 
   newproperty(:local_address) do
@@ -57,6 +78,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       "#{is}".downcase == "#{should}".downcase
     end
+    defaultto :any
   end
 
   newproperty(:remote_address) do
@@ -65,13 +87,14 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       "#{is}".downcase == "#{should}".downcase
     end
+    defaultto :any
   end
 
   newproperty(:protocol) do
     desc "This parameter specifies the protocol for an IPsec rule"
     # Also accept 0-255 :/
     newvalues(:tcp, :udp, :icmpv4, :icmpv6, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
-
+    isrequired
     def insync?(is)
       is.to_s == should.to_s
     end
@@ -84,6 +107,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       "#{is}".downcase == "#{should}".downcase
     end
+    defaultto :any
   end
 
   newproperty(:remote_port) do
@@ -92,12 +116,13 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       "#{is}".downcase == "#{should}".downcase
     end
+    defaultto :any
   end
 
   newproperty(:mode) do
     desc "Specifies the type of IPsec mode connection that the IPsec rule defines (None, Transport, or Tunnel)"
-    newvalues(:none, :transport, :tunnel)
-
+    newvalues(:transport, :tunnel)
+    isrequired
     def insync?(is)
       "#{is}".downcase == "#{should}".downcase
     end
@@ -117,22 +142,26 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
 
   newproperty(:inbound_security) do
     desc "This parameter determines the degree of enforcement for security on inbound traffic"
-    newvalues(:require, :request)
+    newvalues(:none, :require, :request)
+    defaultto :none
   end
 
   newproperty(:outbound_security) do
     desc "This parameter determines the degree of enforcement for security on outbound traffic"
-    newvalues(:require, :request)
+    newvalues(:none, :require, :request)
+    defaultto :none
   end
 
   newproperty(:phase1auth_set) do
     desc "Gets the main mode rules that are associated with the given phase 1 authentication set to be created"
-    newvalues(:computerkerberos, :anonymous)
+    newvalues(:none, :computerkerberos, :anonymous)
+    defaultto :none
   end
 
   newproperty(:phase2auth_set) do
     desc "Gets the IPsec rules that are associated with the given phase 2 authentication set to be created"
-    newvalues(:userkerberos)
+    newvalues(:none, :userkerberos)
+    defaultto :none
   end
 
   newparam(:name) do
