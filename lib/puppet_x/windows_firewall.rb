@@ -103,7 +103,7 @@ module PuppetX
         :logdroppedconnections      => "logging droppedconnections",
         :filename                   => "logging filename",
         :maxfilesize                => "logging maxfilesize",
-     }.fetch(key, key.to_s)
+      }.fetch(key, key.to_s)
     end
 
     def self.to_ps(key)
@@ -111,6 +111,7 @@ module PuppetX
         :enabled               => lambda { |x| camel_case(x)},
         :action                => lambda { |x| camel_case(x)},
         :direction             => lambda { |x| camel_case(x)},
+        :description           => lambda { |x| "\"#{x}\""},
         :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :protocol              => lambda { |x| x.to_s.upcase.sub("V","v")},

@@ -9,6 +9,7 @@
     $Profile,
     [String] $Program,
     $Direction,
+    [String] $Description,
     [String] $LocalAddress,
     [String] $RemoteAddress,
     [String] $ProtocolType,
@@ -30,26 +31,26 @@ Import-Module NetSecurity
 
 function Convert-IpAddressToMaskLength([string] $Address)
 {
-  if ($Address -like '*/*') {
-  $Network=$Address.Split('/')[0]
-  $SubnetMask=$Address.Split('/')[1]
-  $result = 0; 
-  # ensure we have a valid IP address
-  [IPAddress] $ip = $SubnetMask;
-  $octets = $ip.IPAddressToString.Split('.');
-  foreach($octet in $octets)
-  {
-    while(0 -ne $octet) 
-    {
-      $octet = ($octet -shl 1) -band [byte]::MaxValue
-      $result++; 
+    if ($Address -like '*/*') {
+        $Network=$Address.Split('/')[0]
+        $SubnetMask=$Address.Split('/')[1]
+        $result = 0; 
+        # ensure we have a valid IP address
+        [IPAddress] $ip = $SubnetMask;
+        $octets = $ip.IPAddressToString.Split('.');
+        foreach($octet in $octets)
+        {
+            while(0 -ne $octet) 
+            {
+            $octet = ($octet -shl 1) -band [byte]::MaxValue
+            $result++; 
+            }
+        }
+        return $Network+'/'+$result;
     }
-  }
-  return $Network+'/'+$result;
-  }
-  else {
-      return $Address;
-  }   
+    else {
+        return $Address;
+    }   
 }
 
 # Lookup select firewall rules using powershell.
@@ -114,7 +115,7 @@ function Show {
 }
 
 function delete {
-    write-host "Deleting $($Name)..."
+    write-host "Deleting $Name"
 
     # rules containing square brackets need to be escaped or nothing will match
     $Name = $name.replace(']', '`]').replace('[', '`[')
@@ -129,6 +130,7 @@ function delete {
 
 
 function create {
+    write-host "Creating $Name"
 
     $params = @{
         Name        = $Name;
@@ -225,7 +227,7 @@ function create {
 }
 
 function update {
-    write-host "Updating $($Name)..."
+    write-host "Updating $Name"
 
     # rules containing square brackets need to be escaped or nothing will match
     $Name = $name.replace(']', '`]').replace('[', '`[')
