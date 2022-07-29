@@ -22,7 +22,6 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   validate do
     # Only if we ensure that resource should be present
     if self[:ensure] == :present
-      fail('mode is a required attribute') if self[:mode].nil?
       fail('protocol is a required attribute') if self[:protocol].nil?
     end
   end
@@ -69,7 +68,6 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     validate do |value|
       fail("grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group")
     end
-    defaultto :any
   end
 
   newproperty(:local_address) do
@@ -121,11 +119,9 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
 
   newproperty(:mode) do
     desc "Specifies the type of IPsec mode connection that the IPsec rule defines (None, Transport, or Tunnel)"
-    newvalues(:transport, :tunnel)
-    isrequired
-    def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
-    end
+    newvalues(:none, :transport, :tunnel)
+
+    defaultto :transport
   end
 
 
@@ -143,24 +139,28 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   newproperty(:inbound_security) do
     desc "This parameter determines the degree of enforcement for security on inbound traffic"
     newvalues(:none, :require, :request)
+
     defaultto :none
   end
 
   newproperty(:outbound_security) do
     desc "This parameter determines the degree of enforcement for security on outbound traffic"
     newvalues(:none, :require, :request)
+
     defaultto :none
   end
 
   newproperty(:phase1auth_set) do
     desc "Gets the main mode rules that are associated with the given phase 1 authentication set to be created"
     newvalues(:none, :computerkerberos, :anonymous)
+
     defaultto :none
   end
 
   newproperty(:phase2auth_set) do
     desc "Gets the IPsec rules that are associated with the given phase 2 authentication set to be created"
     newvalues(:none, :userkerberos)
+
     defaultto :none
   end
 

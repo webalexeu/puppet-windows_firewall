@@ -88,8 +88,8 @@ function show {
                 InterfaceType       = $if.InterfaceType.toString()
                 InboundSecurity     = $firewallRule.InboundSecurity.toString()
                 OutboundSecurity    = $firewallRule.OutboundSecurity.toString()
-                Phase1AuthSet       = $firewallRule.Phase1AuthSet
-                Phase2AuthSet       = $firewallRule.Phase2AuthSet
+                Phase1AuthSet       = if ($null -ne $firewallRule.Phase1AuthSet) { $firewallRule.Phase1AuthSet } else { 'None' }
+                Phase2AuthSet       = if ($null -ne $firewallRule.Phase2AuthSet) { $firewallRule.Phase2AuthSet } else { 'None' }
             }) > $null
     }
 
@@ -204,7 +204,6 @@ function update {
         Enabled        = $Enabled;
         NewDisplayName = $DisplayName;
         Description    = $Description;
-        Action         = $Action;
     }
 
     #

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.0 (2022-07-29)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.3...v1.3.0)
+
+**Features**
+
+- Manage default value. If no value is specified (for optional settings), the default will be set. This will also ensure that all settings are maintained by the module
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.2.3 (2021-06-09)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.2...v1.2.3)

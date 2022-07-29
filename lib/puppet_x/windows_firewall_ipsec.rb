@@ -145,8 +145,7 @@ module PuppetX
       args = [ "-Name", resource[:name] ]
       
       resource.properties.reject { |property|
-        [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
-            property.value == :none
+        [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|
         # All properties start `-`
         property_name = "-#{camel_case(property.name)}"
@@ -171,8 +170,7 @@ module PuppetX
       args = [ "-Name", resource[:name] ]
       
       resource.properties.reject { |property|
-        [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
-            property.value == :none
+        [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|
         # All properties start `-`
         property_name = "-#{camel_case(property.name)}"
