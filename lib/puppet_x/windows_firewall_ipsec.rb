@@ -78,6 +78,7 @@ module PuppetX
       {
         :enabled               => lambda { |x| camel_case(x)},
         :action                => lambda { |x| camel_case(x)},
+        :description           => lambda { |x| "\"#{x}\""},
         :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :protocol              => lambda { |x| x.to_s.upcase.sub("V","v")},
@@ -144,8 +145,7 @@ module PuppetX
       args = [ "-Name", resource[:name] ]
       
       resource.properties.reject { |property|
-        [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
-            property.value == :none
+        [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|
         # All properties start `-`
         property_name = "-#{camel_case(property.name)}"
@@ -170,8 +170,7 @@ module PuppetX
       args = [ "-Name", resource[:name] ]
       
       resource.properties.reject { |property|
-        [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
-            property.value == :none
+        [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|
         # All properties start `-`
         property_name = "-#{camel_case(property.name)}"
