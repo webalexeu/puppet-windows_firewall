@@ -78,7 +78,6 @@ module PuppetX
       {
         :enabled               => lambda { |x| camel_case(x)},
         :action                => lambda { |x| camel_case(x)},
-        :description           => lambda { |x| "\"#{x}\""},
         :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
         :protocol              => lambda { |x| x.to_s.upcase.sub("V","v")},

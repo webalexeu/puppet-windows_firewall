@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.1 (2022-08-01)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.0...v1.3.1)
+
+**Features**
+
+**Bugfixes**
+
+- [Corrective action on local_port when protocol is icmpv4 and icmp_type is 8](https://github.com/webalexeu/puppet-windows_firewall/issues/17)
+- [Corrective action for some description attribute](https://github.com/webalexeu/puppet-windows_firewall/issues/18)
+
+**Known Issues**
+
 ## Release 1.3.0 (2022-07-29)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.2.3...v1.3.0)
@@ -13,6 +26,9 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+- Corrective action on local_port when protocol is icmpv4 and icmp_type is 8
+- Corrective action for some description attribute
 
 ## Release 1.2.3 (2021-06-09)
 
