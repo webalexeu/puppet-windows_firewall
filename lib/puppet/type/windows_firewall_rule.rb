@@ -142,7 +142,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
 
     defaultto do
-      if @resource[:icmp_type] == '8'
+      if @resource[:icmp_type] != :any
         :rpc
       else
         :any
