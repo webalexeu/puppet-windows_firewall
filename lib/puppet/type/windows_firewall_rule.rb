@@ -126,6 +126,12 @@ Puppet::Type.newtype(:windows_firewall_rule) do
         * ICMP type code pairs: 3:4 (type 3, code 4)
         * `any`
     EOT
+  
+    defaultto do
+      if @resource[:protocol] == :icmpv4 or @resource[:protocol] == :icmpv6
+        :any
+      end
+    end
   end
 
   newproperty(:local_port) do
@@ -135,7 +141,13 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       "#{is}".downcase == "#{should}".downcase
     end
 
-    defaultto :any
+    defaultto do
+      if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
+        :rpc
+      else
+        :any
+      end
+    end
   end
 
   newproperty(:remote_port) do

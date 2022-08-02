@@ -152,16 +152,28 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
 
   newproperty(:phase1auth_set) do
     desc "Gets the main mode rules that are associated with the given phase 1 authentication set to be created"
-    newvalues(:none, :computerkerberos, :anonymous)
+    newvalues(:none, :default, :computerkerberos, :anonymous)
 
-    defaultto :none
+    defaultto do
+      if @resource[:inbound_security] == :require or @resource[:inbound_security] == :request or @resource[:outbound_security] == :require or @resource[:outbound_security] == :request
+        :default
+      else
+        :none
+      end
+    end
   end
 
   newproperty(:phase2auth_set) do
     desc "Gets the IPsec rules that are associated with the given phase 2 authentication set to be created"
-    newvalues(:none, :userkerberos)
+    newvalues(:none, :default, :userkerberos)
 
-    defaultto :none
+    defaultto do
+      if @resource[:inbound_security] == :require or @resource[:inbound_security] == :request or @resource[:outbound_security] == :require or @resource[:outbound_security] == :request
+        :default
+      else
+        :none
+      end
+    end
   end
 
   newparam(:name) do
