@@ -128,7 +128,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     EOT
   
     defaultto do
-      unless @resource[:protocol] == 'icmpv4'
+      if @resource[:protocol] == :icmpv4 or @resource[:protocol] == :icmpv6
         :any
       end
     end
@@ -142,7 +142,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
 
     defaultto do
-      if @resource[:icmp_type] != :any
+      if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
         :rpc
       else
         :any
