@@ -105,18 +105,12 @@ Configures how CRL checking is enforced
 The following parameters are available in the `windows_firewall_global` type.
 
 * [`name`](#name)
-* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Not used (reference only)
-
-##### <a name="provider"></a>`provider`
-
-The specific backend to use for this `windows_firewall_global` resource. You will seldom need to specify this --- Puppet
-will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_group"></a>`windows_firewall_group`
 
@@ -139,18 +133,12 @@ Default value: `true`
 The following parameters are available in the `windows_firewall_group` type.
 
 * [`name`](#name)
-* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of the rule group to enable/disable
-
-##### <a name="provider"></a>`provider`
-
-The specific backend to use for this `windows_firewall_group` resource. You will seldom need to specify this --- Puppet
-will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_ipsec_rule"></a>`windows_firewall_ipsec_rule`
 
@@ -236,19 +224,15 @@ Default value: `none`
 
 ##### `phase1auth_set`
 
-Valid values: `none`, `computerkerberos`, `anonymous`
+Valid values: `none`, `default`, `computerkerberos`, `anonymous`
 
 Gets the main mode rules that are associated with the given phase 1 authentication set to be created
 
-Default value: `none`
-
 ##### `phase2auth_set`
 
-Valid values: `none`, `userkerberos`
+Valid values: `none`, `default`, `userkerberos`
 
 Gets the IPsec rules that are associated with the given phase 2 authentication set to be created
-
-Default value: `none`
 
 ##### `profile`
 
@@ -281,18 +265,12 @@ Default value: `any`
 The following parameters are available in the `windows_firewall_ipsec_rule` type.
 
 * [`name`](#name)
-* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of this rule
-
-##### <a name="provider"></a>`provider`
-
-The specific backend to use for this `windows_firewall_ipsec_rule` resource. You will seldom need to specify this ---
-Puppet will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_profile"></a>`windows_firewall_profile`
 
@@ -367,18 +345,12 @@ Control stateful unicast response to multicast.
 The following parameters are available in the `windows_firewall_profile` type.
 
 * [`name`](#name)
-* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of the profile to work on
-
-##### <a name="provider"></a>`provider`
-
-The specific backend to use for this `windows_firewall_profile` resource. You will seldom need to specify this ---
-Puppet will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_rule"></a>`windows_firewall_rule`
 
@@ -481,8 +453,6 @@ Default value: `any`
 
 the local port the rule targets
 
-Default value: `any`
-
 ##### `local_user`
 
 Specifies that matching IPsec rules of the indicated user accounts are created
@@ -544,16 +514,10 @@ Default value: `any`
 The following parameters are available in the `windows_firewall_rule` type.
 
 * [`name`](#name)
-* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of this rule
-
-##### <a name="provider"></a>`provider`
-
-The specific backend to use for this `windows_firewall_rule` resource. You will seldom need to specify this --- Puppet
-will usually discover the appropriate provider for your platform.
 

@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-- [Corrective action on local_port when protocol is icmpv4 and icmp_type is 8](https://github.com/webalexeu/puppet-windows_firewall/issues/17)
+- [Corrective action on local_port when protocol is icmpv4 and icmp_type is not any](https://github.com/webalexeu/puppet-windows_firewall/issues/17)
 - [Corrective action for some description attribute](https://github.com/webalexeu/puppet-windows_firewall/issues/18)
 
 **Known Issues**
@@ -27,7 +27,7 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-- Corrective action on local_port when protocol is icmpv4 and icmp_type is 8
+- Corrective action on local_port when protocol is icmpv4 and icmp_type is not any
 - Corrective action for some description attribute
 
 ## Release 1.2.3 (2021-06-09)
