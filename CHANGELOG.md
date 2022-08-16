@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.2 (2022-08-16)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.1...v1.3.2)
+
+**Features**
+
+- Change execution output from name to display_name (user-facing name). Default rules name are a randomly assigned value by default (Ex: {F207584F-6202-41D0-B097-6C232F8B64CD}). When you are using purge mechanism, deletion of default rules output will be more user-friendly
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.3.1 (2022-08-02)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.0...v1.3.1)

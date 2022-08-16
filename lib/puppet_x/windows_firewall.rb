@@ -248,14 +248,14 @@ module PuppetX
       input.to_s.split('_').collect(&:capitalize).join
     end
 
-    def self.delete_rule(name)
-      Puppet.notice("(windows_firewall) deleting rule '#{name}'")
-      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["delete", name]).to_s
+    def self.delete_rule(resource)
+      Puppet.notice("(windows_firewall) deleting rule '#{resource[:display_name]}'")
+      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["delete", resource[:name]]).to_s
       Puppet.debug out
     end
 
     def self.update_rule(resource)
-      Puppet.notice("(windows_firewall) updating rule '#{resource[:name]}'")
+      Puppet.notice("(windows_firewall) updating rule '#{resource[:display_name]}'")
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ "-Name", resource[:name] ]
@@ -281,7 +281,7 @@ module PuppetX
     # Create a new firewall rule using powershell
     # @see https://docs.microsoft.com/en-us/powershell/module/netsecurity/new-netfirewallrule?view=win10-ps
     def self.create_rule(resource)
-      Puppet.notice("(windows_firewall) adding rule '#{resource[:name]}'")
+      Puppet.notice("(windows_firewall) adding rule '#{resource[:display_name]}'")
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ "-Name", resource[:name] ]

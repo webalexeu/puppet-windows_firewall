@@ -132,14 +132,14 @@ module PuppetX
       input.to_s.split('_').collect(&:capitalize).join
     end
 
-    def self.delete_rule(name)
-      Puppet.notice("(windows_firewall) deleting rule '#{name}'")
-      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["delete", name]).to_s
+    def self.delete_rule(resource)
+      Puppet.notice("(windows_firewall) deleting ipsec rule '#{resource[:display_name]}'")
+      out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["delete", resource[:name]]).to_s
       Puppet.debug out
     end
 
     def self.update_rule(resource)
-      Puppet.notice("(windows_firewall) updating rule '#{resource[:name]}'")
+      Puppet.notice("(windows_firewall) updating ipsec rule '#{resource[:display_name]}'")
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ "-Name", resource[:name] ]
@@ -155,7 +155,7 @@ module PuppetX
         args << property_name
         args << property_value
       }
-      Puppet.debug "Updating firewall rule with args: #{args}"
+      Puppet.debug "Updating firewall ipsec rule with args: #{args}"
 
       out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["update"] + args)
       Puppet.debug out
@@ -164,7 +164,7 @@ module PuppetX
     # Create a new firewall rule using powershell
     # @see https://docs.microsoft.com/en-us/powershell/module/netsecurity/new-netfirewallrule?view=win10-ps
     def self.create_rule(resource)
-      Puppet.notice("(windows_firewall) adding rule '#{resource[:name]}'")
+      Puppet.notice("(windows_firewall) adding ipsec rule '#{resource[:display_name]}'")
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ "-Name", resource[:name] ]
@@ -180,14 +180,14 @@ module PuppetX
         args << property_name
         args << property_value
       }
-      Puppet.debug "Creating firewall rule with args: #{args}"
+      Puppet.debug "Creating firewall ipsec rule with args: #{args}"
 
       out = Puppet::Util::Execution.execute(resolve_ps_bridge + ["create"] + args)
       Puppet.debug out
     end
 
     def self.rules
-      Puppet.debug("query all rules")
+      Puppet.debug("query all ipsec rules")
       rules = JSON.parse Puppet::Util::Execution.execute(resolve_ps_bridge + ["show"]).to_s
 
       # Rules is an array of hash as-parsed and hash keys need converted to
@@ -198,7 +198,7 @@ module PuppetX
           [key, to_ruby(key).call(v)]
         }].merge({ensure: :present})
       }
-      Puppet.debug("Parsed rules: #{puppet_rules.size}")
+      Puppet.debug("Parsed ipsec rules: #{puppet_rules.size}")
       puppet_rules
     end
 
