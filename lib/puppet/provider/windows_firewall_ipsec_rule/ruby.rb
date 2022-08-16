@@ -24,8 +24,7 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
   end
 
   def destroy()
-    # Delete only require firewall rule name to process
-    PuppetX::WindowsFirewallIPSec.delete_rule @resource[:name]
+    PuppetX::WindowsFirewallIPSec.delete_rule @property_hash
   end
 
   def self.instances
