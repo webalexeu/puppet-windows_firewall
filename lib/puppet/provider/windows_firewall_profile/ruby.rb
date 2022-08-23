@@ -1,13 +1,12 @@
 require 'puppet_x'
-#require 'puppet_x/windows_firewall'
 require_relative '../../../puppet_x/windows_firewall'
 
 Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, :parent => Puppet::Provider) do
   confine :osfamily => :windows
   mk_resource_methods
-  desc "Windows Firewall profile"
+  desc 'Windows Firewall profile'
 
-  commands :cmd => "netsh"
+  commands :cmd => 'netsh'
 
   def self.prefetch(resources)
     instances.each do |prov|

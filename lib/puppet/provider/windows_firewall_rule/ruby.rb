@@ -4,7 +4,7 @@ require_relative '../../../puppet_x/windows_firewall'
 Puppet::Type.type(:windows_firewall_rule).provide(:windows_firewall_rule, :parent => Puppet::Provider) do
   confine :osfamily => :windows
   mk_resource_methods
-  desc "Windows Firewall"
+  desc 'Windows Firewall'
 
 
   def self.prefetch(resources)
