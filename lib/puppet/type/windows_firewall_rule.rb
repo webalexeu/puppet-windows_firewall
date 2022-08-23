@@ -22,9 +22,9 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   validate do
     # Only if we ensure that resource should be present
     if self[:ensure] == :present
-      fail ('direction is a required attribute') if self[:direction].nil?
-      fail('protocol is a required attribute') if self[:protocol].nil?
-      fail('action is a required attribute') if self[:action].nil?
+      raise 'direction is a required attribute' if self[:direction].nil?
+      raise 'protocol is a required attribute' if self[:protocol].nil?
+      raise 'action is a required attribute' if self[:action].nil?
     end
   end
 
@@ -39,7 +39,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     defaultto { @resource[:name] }
     validate do |value|
       unless value.kind_of?(String)
-        fail("Invalid value '#{value}'. Should be a string")
+        raise "Invalid value '#{value}'. Should be a string"
       end
     end
   end
@@ -49,7 +49,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     defaultto ''
     validate do |value|
       unless value.kind_of?(String)
-        fail("Invalid value '#{value}'. Should be a string")
+        raise "Invalid value '#{value}'. Should be a string"
       end
     end
   end
@@ -60,10 +60,10 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     isrequired
     validate do |value|
       unless value.kind_of?(String)
-        fail("Invalid value '#{value}'. Should be a string")
+        raise "Invalid value '#{value}'. Should be a string"
       end
       unless ['inbound', 'outbound'].include?(value)
-        fail("Invalid value '#{value}'. Valid value is inbound or outbound")
+        raise "Invalid value '#{value}'. Valid value is inbound or outbound"
       end
     end
   end
@@ -83,7 +83,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   newproperty(:display_group) do
     desc 'group that the rule belongs to (read-only)'
     validate do |value|
-      fail('grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group')
+      raise 'grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group'
     end
   end
 
@@ -250,7 +250,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Name of this rule'
     isnamevar
     validate do |value|
-      fail("it is not allowed to have a rule called 'any'") if value.downcase == "any"
+      raise "it is not allowed to have a rule called 'any'" if value.downcase == "any"
     end
   end
 

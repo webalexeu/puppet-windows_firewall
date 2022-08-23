@@ -45,7 +45,7 @@ Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, :p
       ].include?(property.name)
     }.each { |property|
       property_name = PuppetX::WindowsFirewall.global_argument_lookup(property.name)
-      property_value = property.value.instance_of?(Array) ? property.value.join(",") : property.value
+      property_value = property.value.instance_of?(Array) ? property.value.join(',') : property.value
 
       # global settings are space delimited and we must run one command per setting
       arg = "#{property_name} \"#{property_value}\""

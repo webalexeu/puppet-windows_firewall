@@ -18,7 +18,7 @@ Puppet::Type.newtype(:windows_firewall_group) do
 
     def insync?(is)
       if is == :absent
-        fail('You are trying to add change a non-existent groups - firewall group names are case-sensitive')
+        raise 'You are trying to add change a non-existent groups - firewall group names are case-sensitive'
       end
 
       # MUST still test the insync condition and return status or will always run
