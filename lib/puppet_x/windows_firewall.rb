@@ -113,7 +113,7 @@ module PuppetX
         :description           => lambda { |x| x.empty? == true ? "\"#{x}\"" : x },
         :interface_type        => lambda { |x| x.map { |e| camel_case(e) }.join(',') },
         :profile               => lambda { |x| x.map { |e| camel_case(e) }.join(',') },
-        :protocol              => lambda { |x| x.to_s.upcase.sub('V','v') },
+        :protocol              => lambda { |x| x.to_s.upcase.sub('V', 'v') },
         :icmp_type             => lambda { |x| camel_case(x) },
         :edge_traversal_policy => lambda { |x| camel_case(x) },
         :local_port            => lambda { |x| "\"#{camel_case(x)}\"" },
@@ -154,7 +154,7 @@ module PuppetX
     end
 
     # Convert name to SID and structure result as SDDL value
-    def self.convert_to_sddl_acl(value,ace)
+    def self.convert_to_sddl_acl(value, ace)
       # we need to convert users to sids first
       sids = []
       value.split(',').sort.each do |name|
@@ -177,7 +177,7 @@ module PuppetX
       if value.to_s == 'any'
         value
       else
-        'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
+        'O:LSD:' + (convert_to_sddl_acl(value['allow'], 'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'], 'D') unless value['block'].nil?).to_s
       end
     end
 
@@ -310,7 +310,7 @@ module PuppetX
       # Rules is an array of hash as-parsed and hash keys need converted to
       # lowercase ruby labels
       puppet_rules = rules.map { |e|
-        Hash[e.map { |k,v|
+        Hash[e.map { |k, v|
           key = snake_case_sym(k)
           [key, to_ruby(key).call(v)]
         }].merge({ensure: :present})
@@ -345,7 +345,7 @@ module PuppetX
 
       # convert into puppet's preferred hash format which is an array of hashes
       # with each hash representing a distinct resource
-      transformed = g.map { |k,v|
+      transformed = g.map { |k, v|
         { :name => k, :enabled => v}
       }
 
@@ -422,9 +422,9 @@ module PuppetX
           when :defaultexemptions
             safe_value = value.split(',').sort
           when :saidletimemin
-            safe_value = value.sub('min','')
+            safe_value = value.sub('min', '')
           when :ipsecthroughnat
-            safe_value = value.gsub(' ','')
+            safe_value = value.gsub(' ', '')
           else
             safe_value = value
           end

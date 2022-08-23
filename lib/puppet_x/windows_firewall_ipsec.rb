@@ -80,7 +80,7 @@ module PuppetX
         :description           => lambda { |x| x.empty? == true ? "\"#{x}\"" : x },
         :interface_type        => lambda { |x| x.map { |e| camel_case(e)}.join(',') },
         :profile               => lambda { |x| x.map { |e| camel_case(e)}.join(',') },
-        :protocol              => lambda { |x| x.to_s.upcase.sub('V','v') },
+        :protocol              => lambda { |x| x.to_s.upcase.sub('V', 'v') },
         :local_port            => lambda { |x| "\"#{camel_case(x)}\"" },
         :remote_port           => lambda { |x| "\"#{camel_case(x)}\"" },
         :local_address         => lambda { |x| "\"#{camel_case(x)}\"" },
@@ -192,7 +192,7 @@ module PuppetX
       # Rules is an array of hash as-parsed and hash keys need converted to
       # lowercase ruby labels
       puppet_rules = rules.map { |e|
-        Hash[e.map { |k,v|
+        Hash[e.map { |k, v|
           key = snake_case_sym(k)
           [key, to_ruby(key).call(v)]
         }].merge({ensure: :present})
@@ -269,9 +269,9 @@ module PuppetX
           when :defaultexemptions
             safe_value = value.split(',').sort
           when :saidletimemin
-            safe_value = value.sub('min','')
+            safe_value = value.sub('min', '')
           when :ipsecthroughnat
-            safe_value = value.gsub(' ','')
+            safe_value = value.gsub(' ', '')
           else
             safe_value = value
           end
