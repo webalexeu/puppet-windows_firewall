@@ -88,6 +88,7 @@ function Show {
                 Direction           = $firewallRule.Direction.toString()
                 EdgeTraversalPolicy = $firewallRule.EdgeTraversalPolicy.toString()
                 Profile             = $firewallRule.Profile.toString()
+                # If display group is empty, return 'None' (Required for windows_firewall_group)
                 DisplayGroup        = if ($null -ne $firewallRule.DisplayGroup) { $firewallRule.DisplayGroup } else { 'None' }
                 # Address Filter (Newer powershell versions return a hash)
                 LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }

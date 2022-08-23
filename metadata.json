@@ -1,6 +1,6 @@
 {
   "name": "webalex-windows_firewall",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "author": "webalex",
   "summary": "Manage the windows firewall with Puppet",
   "license": "Apache-2.0",
@@ -17,6 +17,7 @@
         "2012 R2",
         "2016",
         "2019",
+        "2022",
         "8",
         "8.1",
         "10"
@@ -26,7 +27,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 7.0.0"
+      "version_requirement": ">= 4.7.0 < 8.0.0"
     }
   ],
   "pdk-version": "2.5.0",
