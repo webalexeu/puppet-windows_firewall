@@ -75,31 +75,31 @@ module PuppetX
 
     def self.to_ps(key)
       {
-        :enabled               => lambda { |x| camel_case(x)},
-        :action                => lambda { |x| camel_case(x)},
-        :description           => lambda { |x| x.empty? == true ? "\"#{x}\"" : x},
-        :interface_type        => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
-        :profile               => lambda { |x| x.map {|e| camel_case(e)}.join(",")},
-        :protocol              => lambda { |x| x.to_s.upcase.sub("V","v")},
-        :local_port            => lambda { |x| "\"#{camel_case(x)}\""},
-        :remote_port           => lambda { |x| "\"#{camel_case(x)}\""},
-        :local_address         => lambda { |x| "\"#{camel_case(x)}\""},
-        :remote_address        => lambda { |x| "\"#{camel_case(x)}\""},
-        :mode                  => lambda { |x| camel_case(x)},
-        :inbound_security      => lambda { |x| camel_case(x)},
-        :outbound_security     => lambda { |x| camel_case(x)},
-        :phase1auth_set        => lambda { |x| camel_case(x)},
-        :phase2auth_set        => lambda { |x| camel_case(x)},
+        :enabled               => lambda { |x| camel_case(x) },
+        :action                => lambda { |x| camel_case(x) },
+        :description           => lambda { |x| x.empty? == true ? "\"#{x}\"" : x },
+        :interface_type        => lambda { |x| x.map { |e| camel_case(e)}.join(',') },
+        :profile               => lambda { |x| x.map { |e| camel_case(e)}.join(',') },
+        :protocol              => lambda { |x| x.to_s.upcase.sub('V','v') },
+        :local_port            => lambda { |x| "\"#{camel_case(x)}\"" },
+        :remote_port           => lambda { |x| "\"#{camel_case(x)}\"" },
+        :local_address         => lambda { |x| "\"#{camel_case(x)}\"" },
+        :remote_address        => lambda { |x| "\"#{camel_case(x)}\"" },
+        :mode                  => lambda { |x| camel_case(x) },
+        :inbound_security      => lambda { |x| camel_case(x) },
+        :outbound_security     => lambda { |x| camel_case(x) },
+        :phase1auth_set        => lambda { |x| camel_case(x) },
+        :phase2auth_set        => lambda { |x| camel_case(x) },
       }.fetch(key, lambda { |x| x })
     end
 
     def self.to_ruby(key)
       {
-        :enabled                => lambda { |x| snake_case_sym(x)},
-        :action                 => lambda { |x| snake_case_sym(x)},
-        :interface_type         => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)}},
-        :profile                => lambda { |x| x.split(",").map{ |e| snake_case_sym(e.strip)}},
-        :protocol               => lambda { |x| snake_case_sym(x)},
+        :enabled                => lambda { |x| snake_case_sym(x) },
+        :action                 => lambda { |x| snake_case_sym(x) },
+        :interface_type         => lambda { |x| x.split(',').map{ |e| snake_case_sym(e.strip) } },
+        :profile                => lambda { |x| x.split(',').map{ |e| snake_case_sym(e.strip) } },
+        :protocol               => lambda { |x| snake_case_sym(x) },
         :remote_port            => lambda { |x| x.downcase },
         :local_port             => lambda { |x| x.downcase },
         :remote_address         => lambda { |x| x.downcase },
@@ -261,7 +261,7 @@ module PuppetX
             #   DHGroup2-AES128-SHA1,DHGroup2-3DES-SHA1
             # but must be input with a colon like this:
             #   DHGroup2:AES128-SHA1,DHGroup2:3DES-SHA1
-            safe_value = value.split(",").map { |e|
+            safe_value = value.split(',').map { |e|
               e.sub('-', ':')
             }.join(',')
           when :strongcrlcheck
