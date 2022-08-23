@@ -142,7 +142,7 @@ module PuppetX
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ '-Name', resource[:name] ]
-      
+
       resource.properties.reject { |property|
         [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|
@@ -167,7 +167,7 @@ module PuppetX
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ '-Name', resource[:name] ]
-      
+
       resource.properties.reject { |property|
         [:ensure, :protocol_type, :protocol_code].include?(property.name)
       }.each { |property|

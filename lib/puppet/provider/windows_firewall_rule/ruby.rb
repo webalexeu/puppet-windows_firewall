@@ -13,7 +13,7 @@ Puppet::Type.type(:windows_firewall_rule).provide(:windows_firewall_rule, :paren
       end
     end
   end
-  
+
   def exists?
     @property_hash[:ensure] == :present
   end

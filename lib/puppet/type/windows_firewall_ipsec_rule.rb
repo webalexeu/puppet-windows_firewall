@@ -153,7 +153,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     newvalues(:none, :default, :computerkerberos, :anonymous)
 
     defaultto do
-      if @resource[:inbound_security] == :require or @resource[:inbound_security] == :request or @resource[:outbound_security] == :require or @resource[:outbound_security] == :request
+      if @resource[:inbound_security] == :require || @resource[:inbound_security] == :request || @resource[:outbound_security] == :require || @resource[:outbound_security] == :request
         :default
       else
         :none
@@ -166,7 +166,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     newvalues(:none, :default, :userkerberos)
 
     defaultto do
-      if @resource[:inbound_security] == :require or @resource[:inbound_security] == :request or @resource[:outbound_security] == :require or @resource[:outbound_security] == :request
+      if @resource[:inbound_security] == :require|| @resource[:inbound_security] == :request || @resource[:outbound_security] == :require || @resource[:outbound_security] == :request
         :default
       else
         :none

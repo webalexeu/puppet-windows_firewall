@@ -13,7 +13,7 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
       end
     end
   end
-  
+
   def exists?
     @property_hash[:ensure] == :present
   end

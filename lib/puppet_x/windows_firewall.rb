@@ -180,7 +180,7 @@ module PuppetX
         'O:LSD:' + (convert_to_sddl_acl(value['allow'],'A') unless value['allow'].nil?).to_s + (convert_to_sddl_acl(value['block'],'D') unless value['block'].nil?).to_s
       end
     end
-  
+
     # Parse SDDL value and convert SID to name
     def self.convert_from_sddl(value)
       if value == 'Any'
@@ -258,7 +258,7 @@ module PuppetX
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ '-Name', resource[:name] ]
-      
+
       resource.properties.reject { |property|
         [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
             property.value == :none
@@ -284,7 +284,7 @@ module PuppetX
 
       # `Name` is mandatory and also a `parameter` not a `property`
       args = [ '-Name', resource[:name] ]
-      
+
       resource.properties.reject { |property|
         [:ensure, :protocol_type, :protocol_code].include?(property.name) ||
             property.value == :none
@@ -306,7 +306,7 @@ module PuppetX
     def self.rules
       Puppet.debug('query all rules')
       rules = JSON.parse Puppet::Util::Execution.execute(resolve_ps_bridge + ['show']).to_s
-      
+
       # Rules is an array of hash as-parsed and hash keys need converted to
       # lowercase ruby labels
       puppet_rules = rules.map { |e|
@@ -346,7 +346,7 @@ module PuppetX
       # convert into puppet's preferred hash format which is an array of hashes
       # with each hash representing a distinct resource
       transformed = g.map { |k,v|
-        {:name => k, :enabled => v}
+        { :name => k, :enabled => v}
       }
 
       Puppet.debug("group rules #{transformed}")
