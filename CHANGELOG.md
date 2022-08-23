@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.4 (2022-08-23)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.3...v1.3.4)
+
+**Features**
+
+ - Add support for Windows Server 2022
+ - Add support for Puppet 7
+ - Code cleaning
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.3.3 (2022-08-20)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.2...v1.3.3)

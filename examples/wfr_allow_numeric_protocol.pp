@@ -1,5 +1,5 @@
 # @PDQTestWin
-windows_firewall_rule { "puppet - test numeric protocol IGMP":
+windows_firewall_rule { 'puppet - test numeric protocol IGMP':
   direction   => 'inbound',
   action      => 'allow',
   protocol    => '2',
