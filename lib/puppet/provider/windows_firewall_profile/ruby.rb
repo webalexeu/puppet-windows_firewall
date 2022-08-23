@@ -18,17 +18,14 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
 
   # firewall groups always exist we can only enable/disable them
   def exists?
-    #@property_hash[:ensure] == :present
     true
   end
 
   # all work done in `flush()` method
-  def create()
-  end
+  def create; end
 
   # all work done in `flush()` method
-  def destroy()
-  end
+  def destroy; end
 
 
   def self.instances

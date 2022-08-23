@@ -9,7 +9,6 @@ module PuppetX
     SCRIPT_FILE = 'ps-bridge.ps1'
     SCRIPT_PATH = File.join('ps/windows_firewall', SCRIPT_FILE)
 
-
     # We need to be able to invoke the PS bridge script in both agent and apply
     # mode. In agent mode, the file will be found in LIBDIR, in apply mode it will
     # be found somewhere under CODEDIR. We need to read from the appropriate dir
@@ -161,11 +160,11 @@ module PuppetX
       value.split(',').sort.each do |name|
         name.strip!
         sid = Puppet::Util::Windows::SID.name_to_sid(name)
-        #If resolution failed, thrown a warning
+        # If resolution failed, thrown a warning
         if sid.nil?
           warn("\"#{value}\" does not exist")
         else
-          #Generate structured SSDL ACL
+          # Generate structured SSDL ACL
           cur_sid = '('+ ace +';;CC;;;' + sid + ')'
         end
         sids << cur_sid unless cur_sid.nil?
@@ -185,7 +184,7 @@ module PuppetX
     # Parse SDDL value and convert SID to name
     def self.convert_from_sddl(value)
       if value == 'Any'
-        #Return value in lowercase
+        # Return value in lowercase
         value.downcase!
       else
         # we need to convert users to sids first
@@ -195,18 +194,18 @@ module PuppetX
         value.gsub! ')(', ','
         # Remove '()'
         value.delete! '()'
-        #Define variables
+        # Define variables
         names = {}
         allow = []
         deny = []
         value.split(',').sort.each do |sid|
-          #ACE is first character
+          # ACE is first character
           ace = sid.chr.upcase
-          #Delete prefix on each user
+          # Delete prefix on each user
           sid.delete_prefix! ace + ';;CC;;;'
           sid.strip!
           name = Puppet::Util::Windows::SID.sid_to_name(sid)
-          #If resolution failed, return SID
+          # If resolution failed, return SID
           if name.nil?
             cur_name = sid.downcase!
           else

@@ -7,7 +7,6 @@ module PuppetX
     SCRIPT_FILE = 'ps-bridge-ipsec.ps1'
     SCRIPT_PATH = File.join('ps/windows_firewall', SCRIPT_FILE)
 
-
     # We need to be able to invoke the PS bridge script in both agent and apply
     # mode. In agent mode, the file will be found in LIBDIR, in apply mode it will
     # be found somewhere under CODEDIR. We need to read from the appropriate dir

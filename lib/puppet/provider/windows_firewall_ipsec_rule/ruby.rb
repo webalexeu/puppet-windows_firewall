@@ -6,7 +6,6 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
   mk_resource_methods
   desc 'Windows Firewall'
 
-
   def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
@@ -19,11 +18,11 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
     @property_hash[:ensure] == :present
   end
 
-  def create()
+  def create
     PuppetX::WindowsFirewallIPSec.create_rule @resource
   end
 
-  def destroy()
+  def destroy
     PuppetX::WindowsFirewallIPSec.delete_rule @property_hash
   end
 

@@ -98,7 +98,6 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     end
   end
 
-
   newproperty(:local_port) do
     desc 'Specifies that network packets with matching IP port numbers match this rule'
 
@@ -123,7 +122,6 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
 
     defaultto :transport
   end
-
 
   newproperty(:interface_type, :array_matching=>:all) do
     desc 'Specifies that only network connections made through the indicated interface types are subject to the requirements of this rule'
