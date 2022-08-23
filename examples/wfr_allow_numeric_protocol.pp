@@ -4,5 +4,5 @@ windows_firewall_rule { 'puppet - test numeric protocol IGMP':
   action      => 'allow',
   protocol    => '2',
   program     => 'System',
-  description => 'Core Networking - Internet Group Management Protocol (IGMP-In)',
+  description => 'Core Networking - Internet Group Management Protocol (IGMP-In)';
 }

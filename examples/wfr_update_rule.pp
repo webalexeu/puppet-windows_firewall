@@ -4,5 +4,5 @@ windows_firewall_rule { 'puppet - rule':
   local_port => 1111,
   direction  => 'inbound',
   action     => 'allow',
-  protocol   => 'tcp',
+  protocol   => 'tcp';
 }

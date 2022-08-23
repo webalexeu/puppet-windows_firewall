@@ -4,7 +4,7 @@ windows_firewall_rule { 'puppet - allow ports 1000-2000':
   direction  => 'inbound',
   action     => 'allow',
   protocol   => 'tcp',
-  local_port => '1000-2000',
+  local_port => '1000-2000';
 }
 
 windows_firewall_rule { 'puppet - allow port rpc':
@@ -12,7 +12,7 @@ windows_firewall_rule { 'puppet - allow port rpc':
   direction  => 'inbound',
   action     => 'allow',
   protocol   => 'tcp',
-  local_port => 'RPC',
+  local_port => 'RPC';
 }
 
 windows_firewall_rule { 'puppet - allow port rpcemap':
@@ -20,7 +20,7 @@ windows_firewall_rule { 'puppet - allow port rpcemap':
   direction  => 'inbound',
   action     => 'allow',
   protocol   => 'tcp',
-  local_port => 'RPCEPMap',
+  local_port => 'RPCEPMap';
 }
 
 windows_firewall_rule { 'puppet - allow port iphttps - in':
@@ -28,7 +28,7 @@ windows_firewall_rule { 'puppet - allow port iphttps - in':
   direction  => 'inbound',
   action     => 'allow',
   protocol   => 'tcp',
-  local_port => 'IPHTTPSIn',
+  local_port => 'IPHTTPSIn';
 }
 
 windows_firewall_rule { 'puppet - allow port iphttps - out':
@@ -49,7 +49,7 @@ windows_firewall_rule { 'puppet - open port in specific profiles':
   remote_port    => 6661,
   local_address  => '192.168.1.1',
   remote_address => '192.168.1.2',
-  interface_type => ['wireless', 'wired'],
+  interface_type => ['wireless', 'wired'];
 }
 
 
@@ -59,6 +59,5 @@ windows_firewall_rule { 'puppet - multiple ports':
   protocol       => 'tcp',
   local_port     => '443,80,4243,5000-5010',
   remote_address => 'any',
-  remote_port    => '444,81,4244,6000-6010'
+  remote_port    => '444,81,4244,6000-6010';
 }
-

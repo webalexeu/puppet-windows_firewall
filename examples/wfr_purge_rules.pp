@@ -1,6 +1,6 @@
 # @PDQTestWin
 resources { 'windows_firewall_rule':
-  purge => true,
+  purge => true;
 }
 
 windows_firewall_rule { 'puppet - allow all':
@@ -8,5 +8,5 @@ windows_firewall_rule { 'puppet - allow all':
   direction  => 'inbound',
   action     => 'allow',
   protocol   => 'tcp',
-  local_port => 'any',
+  local_port => 'any';
 }

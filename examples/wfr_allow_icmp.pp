@@ -12,7 +12,7 @@ windows_firewall_rule { 'puppet - allow icmp 2':
   direction => 'inbound',
   action    => 'allow',
   protocol  => 'icmpv4',
-  icmp_type => '2:1',
+  icmp_type => '2:1';
 }
 
 windows_firewall_rule { 'puppet - allow icmp 3':
@@ -20,5 +20,5 @@ windows_firewall_rule { 'puppet - allow icmp 3':
   direction => 'inbound',
   action    => 'allow',
   protocol  => 'icmpv4',
-  icmp_type => 'any',
+  icmp_type => 'any';
 }
