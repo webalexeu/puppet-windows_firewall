@@ -52,7 +52,6 @@ windows_firewall_rule { 'puppet - open port in specific profiles':
   interface_type => ['wireless', 'wired'];
 }
 
-
 windows_firewall_rule { 'puppet - multiple ports':
   direction      => 'inbound',
   action         => 'allow',
