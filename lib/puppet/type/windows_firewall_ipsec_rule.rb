@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
-  @doc = 'Windows Firewall with Puppet'
+  @doc = 'Manage Windows Firewall with Puppet'
 
   ensurable do
     desc "How to ensure this firewall rule (`present` or `absent`)"
