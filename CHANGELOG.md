@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.4.0 (2022-12-04)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.4...v1.4.0)
+
+**Features**
+
+*Breaking changes*:
+ - local_port,remote_port,local_address,remote_address are now defined as string or array of strings
+ (Not supporting anymore multiple values splitted with comma)
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.3.4 (2022-08-23)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.3...v1.3.4)

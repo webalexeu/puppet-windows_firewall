@@ -122,7 +122,7 @@ windows_firewall_rule { "puppet - allow ports 1000-2000":
   direction  => "inbound",
   action     => "allow",
   protocol   => "tcp",
-  local_port => "80,443,4243,5000-5010",
+  local_port => ['80', '443', '4243', '5000-5010'],
 }
 
 ```
@@ -211,7 +211,7 @@ windows_firewall_ipsec_rule { 'test - ipsec':
   ensure            => present,
   local_port        => '9999,1900',
   local_address     => $::ipaddress,
-  remote_address    => '192.168.0.0/24,192.168.1.0/24',
+  remote_address    => ['192.168.0.0/24', '192.168.1.0/24'],
   protocol          => 'tcp',
   inbound_security  => 'require',
   outbound_security => 'require',

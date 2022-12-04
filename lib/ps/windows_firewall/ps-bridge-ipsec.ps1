@@ -7,10 +7,10 @@
     [String] $Protocol,
     [String] $Mode,
     $Profile,
-    [String] $LocalAddress,
-    [String] $RemoteAddress,
-    [String]    $LocalPort,
-    [String]    $RemotePort,
+    $LocalAddress,
+    $RemoteAddress,
+    $LocalPort,
+    $RemotePort,
     $InterfaceType,
     $Phase1AuthSet,
     $Phase2AuthSet,
@@ -78,11 +78,11 @@ function show {
                 DisplayGroup        = $firewallRule.DisplayGroup
                 Mode                = $firewallRule.Mode.toString()
                 # Address Filter (Newer powershell versions return a hash)
-                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
-                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
+                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.LocalAddress }
+                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
                 # Port Filter (Newer powershell versions return a hash)
-                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort -join "," } else { $pf.LocalPort }
-                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort -join "," } else { $pf.RemotePort }
+                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort } else { $pf.LocalPort }
+                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort } else { $pf.RemotePort }
                 Protocol            = $pf.Protocol
                 # Interface Filter
                 InterfaceType       = $if.InterfaceType.toString()

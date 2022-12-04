@@ -10,12 +10,12 @@
     [String] $Program,
     $Direction,
     [String] $Description,
-    [String] $LocalAddress,
-    [String] $RemoteAddress,
+    $LocalAddress,
+    $RemoteAddress,
     [String] $ProtocolType,
     [Int]    $ProtocolCode,
-    [String] $LocalPort,
-    [String] $RemotePort,
+    $LocalPort,
+    $RemotePort,
     $EdgeTraversalPolicy,
     $InterfaceType,
     $Service,
@@ -91,11 +91,11 @@ function Show {
                 # If display group is empty, return 'None' (Required for windows_firewall_group)
                 DisplayGroup        = if ($null -ne $firewallRule.DisplayGroup) { $firewallRule.DisplayGroup } else { 'None' }
                 # Address Filter (Newer powershell versions return a hash)
-                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
-                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
+                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.LocalAddress }
+                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
                 # Port Filter (Newer powershell versions return a hash)
-                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort -join "," } else { $pf.LocalPort }
-                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort -join "," } else { $pf.RemotePort }
+                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort } else { $pf.LocalPort }
+                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort } else { $pf.RemotePort }
                 Protocol            = $pf.Protocol
                 IcmpType            = $pf.IcmpType
                 # Application Filter

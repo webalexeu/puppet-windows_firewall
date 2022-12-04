@@ -87,24 +87,24 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
   end
 
-  newproperty(:local_address) do
-    desc 'the local IP the rule targets (hostname not allowed)'
+  newproperty(:local_address, :array_matching=>:all) do
+    desc 'the local IP the rule targets (hostname not allowed), use an array to pass more then one'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.sort == should.sort
     end
 
-    defaultto :any
+    defaultto 'any'
   end
 
-  newproperty(:remote_address) do
-    desc 'the remote IP the rule targets (hostname not allowed)'
+  newproperty(:remote_address, :array_matching=>:all) do
+    desc 'the remote IP the rule targets (hostname not allowed), use an array to pass more then one'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.sort == should.sort
     end
 
-    defaultto :any
+    defaultto 'any'
   end
 
   newproperty(:protocol) do
@@ -134,30 +134,30 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
   end
 
-  newproperty(:local_port) do
-    desc 'the local port the rule targets'
+  newproperty(:local_port, :array_matching=>:all) do
+    desc 'the local port the rule targets, use an array to pass more then one'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.sort == should.sort
     end
 
     defaultto do
       if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
-        :rpc
+        'rpc'
       else
-        :any
+        'any'
       end
     end
   end
 
-  newproperty(:remote_port) do
-    desc 'the remote port the rule targets'
+  newproperty(:remote_port, :array_matching=>:all) do
+    desc 'the remote port the rule targets, use an array to pass more then one'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.sort == should.sort
     end
 
-    defaultto :any
+    defaultto 'any'
   end
 
   newproperty(:edge_traversal_policy) do
