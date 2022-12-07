@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Release 1.4.0 (2022-12-04)
+## Release 1.4.0 (2022-12-07)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.4...v1.4.0)
 

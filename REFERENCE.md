@@ -8,7 +8,7 @@
 
 * [`windows_firewall_global`](#windows_firewall_global): Manage windows global firewall settings
 * [`windows_firewall_group`](#windows_firewall_group): Enable/Disable windows firewall group
-* [`windows_firewall_ipsec_rule`](#windows_firewall_ipsec_rule): Windows Firewall with Puppet
+* [`windows_firewall_ipsec_rule`](#windows_firewall_ipsec_rule): Manage Windows Firewall with Puppet
 * [`windows_firewall_profile`](#windows_firewall_profile): Enable/Disable windows firewall profile
 * [`windows_firewall_rule`](#windows_firewall_rule): Manage Windows Firewall with Puppet
 
@@ -154,7 +154,7 @@ will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_ipsec_rule"></a>`windows_firewall_ipsec_rule`
 
-Windows Firewall with Puppet
+Manage Windows Firewall with Puppet
 
 #### Properties
 
