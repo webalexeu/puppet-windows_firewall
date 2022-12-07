@@ -90,6 +90,14 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   newproperty(:local_address, :array_matching=>:all) do
     desc 'the local IP the rule targets (hostname not allowed), use an array to pass more then one'
 
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
+    end
+
+    # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
     end
@@ -100,6 +108,14 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   newproperty(:remote_address, :array_matching=>:all) do
     desc 'the remote IP the rule targets (hostname not allowed), use an array to pass more then one'
 
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
+    end
+
+    # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
     end
@@ -137,11 +153,20 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   newproperty(:local_port, :array_matching=>:all) do
     desc 'the local port the rule targets, use an array to pass more then one'
 
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
+    end
+
+    # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
     end
 
     defaultto do
+      # Default is different when icmp_type is used
       if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
         'rpc'
       else
@@ -153,6 +178,14 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   newproperty(:remote_port, :array_matching=>:all) do
     desc 'the remote port the rule targets, use an array to pass more then one'
 
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
+    end
+
+    # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
     end

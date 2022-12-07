@@ -10,12 +10,12 @@
     [String] $Program,
     $Direction,
     [String] $Description,
-    $LocalAddress,
-    $RemoteAddress,
+    [String] $LocalAddress,
+    [String] $RemoteAddress,
     [String] $ProtocolType,
     [Int]    $ProtocolCode,
-    $LocalPort,
-    $RemotePort,
+    [String] $LocalPort,
+    [String] $RemotePort,
     $EdgeTraversalPolicy,
     $InterfaceType,
     $Service,
@@ -90,12 +90,12 @@ function Show {
                 Profile             = $firewallRule.Profile.toString()
                 # If display group is empty, return 'None' (Required for windows_firewall_group)
                 DisplayGroup        = if ($null -ne $firewallRule.DisplayGroup) { $firewallRule.DisplayGroup } else { 'None' }
-                # Address Filter (Newer powershell versions return a hash)
-                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.LocalAddress }
-                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
-                # Port Filter (Newer powershell versions return a hash)
-                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort } else { $pf.LocalPort }
-                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort } else { $pf.RemotePort }
+                # Address Filter (Newer powershell versions return a hash) - Return are sorted to be displayed properly in resources output
+                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.LocalAddress.toString() }
+                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.RemoteAddress.toString() }
+                # Port Filter (Newer powershell versions return a hash) - Return are sorted to be displayed properly in resources output
+                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort | Sort-Object } else { $pf.LocalPort.toString() }
+                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort | Sort-Object } else { $pf.RemotePort.toString() }
                 Protocol            = $pf.Protocol
                 IcmpType            = $pf.IcmpType
                 # Application Filter
