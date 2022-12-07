@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
-  @doc = 'Windows Firewall with Puppet'
+  @doc = 'Manage Windows Firewall with Puppet'
 
   ensurable do
     desc "How to ensure this firewall rule (`present` or `absent`)"
@@ -70,22 +70,50 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     end
   end
 
-  newproperty(:local_address) do
-    desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed)'
+  newproperty(:local_address, :array_matching=>:all) do
+    desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one'
 
-    def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
     end
-    defaultto :any
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
+    # Compare sorted arrays to avoid corrective
+    def insync?(is)
+      is.sort == should.sort
+    end
+
+    defaultto 'any'
   end
 
-  newproperty(:remote_address) do
-    desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed)'
+  newproperty(:remote_address, :array_matching=>:all) do
+    desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one'
 
-    def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
     end
-    defaultto :any
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
+    # Compare sorted arrays to avoid corrective
+    def insync?(is)
+      is.sort == should.sort
+    end
+
+    defaultto 'any'
   end
 
   newproperty(:protocol) do
@@ -98,22 +126,50 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     end
   end
 
-  newproperty(:local_port) do
-    desc 'Specifies that network packets with matching IP port numbers match this rule'
+  newproperty(:local_port, :array_matching=>:all) do
+    desc 'Specifies that network packets with matching IP port numbers match this rule, use an array to pass more then one'
 
-    def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
     end
-    defaultto :any
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
+    # Compare sorted arrays to avoid corrective
+    def insync?(is)
+      is.sort == should.sort
+    end
+
+    defaultto 'any'
   end
 
-  newproperty(:remote_port) do
-    desc 'This parameter value is the second end point of an IPsec rule'
+  newproperty(:remote_port, :array_matching=>:all) do
+    desc 'This parameter value is the second end point of an IPsec rule, use an array to pass more then one'
 
-    def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+    # Checking that old syntax using comma is not used
+    validate do |value|
+      if value.include?(',')
+        raise "Invalid value '#{value}'. Comma is not allowed"
+      end
     end
-    defaultto :any
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
+    # Compare sorted arrays to avoid corrective
+    def insync?(is)
+      is.sort == should.sort
+    end
+
+    defaultto 'any'
   end
 
   newproperty(:mode) do

@@ -90,12 +90,12 @@ function Show {
                 Profile             = $firewallRule.Profile.toString()
                 # If display group is empty, return 'None' (Required for windows_firewall_group)
                 DisplayGroup        = if ($null -ne $firewallRule.DisplayGroup) { $firewallRule.DisplayGroup } else { 'None' }
-                # Address Filter (Newer powershell versions return a hash)
-                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.LocalAddress }
-                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) -join ","  } else { Convert-IpAddressToMaskLength $af.RemoteAddress }
-                # Port Filter (Newer powershell versions return a hash)
-                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort -join "," } else { $pf.LocalPort }
-                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort -join "," } else { $pf.RemotePort }
+                # Address Filter (Newer powershell versions return a hash) - Return are sorted to be displayed properly in resources output
+                LocalAddress        = if ($af.LocalAddress -is [object]) { ($af.LocalAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.LocalAddress.toString() }
+                RemoteAddress       = if ($af.RemoteAddress -is [object]) { ($af.RemoteAddress | ForEach-Object {Convert-IpAddressToMaskLength $_} | Sort-Object) } else { Convert-IpAddressToMaskLength $af.RemoteAddress.toString() }
+                # Port Filter (Newer powershell versions return a hash) - Return are sorted to be displayed properly in resources output
+                LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort | Sort-Object } else { $pf.LocalPort.toString() }
+                RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort | Sort-Object } else { $pf.RemotePort.toString() }
                 Protocol            = $pf.Protocol
                 IcmpType            = $pf.IcmpType
                 # Application Filter
@@ -171,8 +171,7 @@ function create {
     }
     # `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
-    # `-Command`, just do a simple string split. The firewall GUI will sort any
-    # passed port ranges but the PS API does not
+    # `-Command`, just do a simple string split
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }
@@ -195,6 +194,9 @@ function create {
     }
 
     # Host filter
+    # `$LocalAddress` and `$RemoteAddress` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split
     if ($LocalAddress) {
         $params.Add("LocalAddress", ($LocalAddress -split ','))
     }
@@ -270,8 +272,7 @@ function update {
     }
     # `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
-    # `-Command`, just do a simple string split. The firewall GUI will sort any
-    # passed port ranges but the PS API does not
+    # `-Command`, just do a simple string split
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }
@@ -294,6 +295,9 @@ function update {
     }
 
     # Host filter
+    # `$LocalAddress` and `$RemoteAddress` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split
     if ($LocalAddress) {
         $params.Add("LocalAddress", ($LocalAddress -split ','))
     }

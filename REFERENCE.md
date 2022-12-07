@@ -32,7 +32,7 @@ Authz computer transport
 
 ##### `authzusergrp`
 
-Configures the users that are authorized to establish tunnel mode connections.
+Configures the users that are authorized to establish tunnel mode connections
 
 ##### `authzusergrptransport`
 
@@ -44,13 +44,13 @@ Boot time rule category
 
 ##### `consecrulecategory`
 
-con sec rule category
+"con sec rule category
 
 ##### `defaultexemptions`
 
 Valid values: `none`, `neighbordiscovery`, `icmp`, `dhcp`, `notconfigured`
 
-Configures the default IPsec exemptions. Default is to exempt IPv6 neighbordiscovery protocol and DHCP from IPsec.
+Configures the default IPsec exemptions. Default is to exempt IPv6 neighbordiscovery protocol and DHCP from IPsec
 
 ##### `firewallrulecategory`
 
@@ -74,7 +74,7 @@ Sets main mode key lifetime in minutes and sessions
 
 ##### `saidletimemin`
 
-Configures the security association idle time in minutes.
+Configures the security association idle time in minutes
 
 ##### `secmethods`
 
@@ -105,12 +105,18 @@ Configures how CRL checking is enforced
 The following parameters are available in the `windows_firewall_global` type.
 
 * [`name`](#name)
+* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Not used (reference only)
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `windows_firewall_global` resource. You will seldom need to specify this --- Puppet
+will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_group"></a>`windows_firewall_group`
 
@@ -133,12 +139,18 @@ Default value: `true`
 The following parameters are available in the `windows_firewall_group` type.
 
 * [`name`](#name)
+* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of the rule group to enable/disable
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `windows_firewall_group` resource. You will seldom need to specify this --- Puppet
+will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_ipsec_rule"></a>`windows_firewall_ipsec_rule`
 
@@ -196,13 +208,13 @@ Default value: `any`
 
 ##### `local_address`
 
-Specifies that network packets with matching IP addresses match this rule (hostname not allowed)
+Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one
 
 Default value: `any`
 
 ##### `local_port`
 
-Specifies that network packets with matching IP port numbers match this rule
+Specifies that network packets with matching IP port numbers match this rule, use an array to pass more then one
 
 Default value: `any`
 
@@ -250,13 +262,13 @@ This parameter specifies the protocol for an IPsec rule
 
 ##### `remote_address`
 
-Specifies that network packets with matching IP addresses match this rule (hostname not allowed)
+Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one
 
 Default value: `any`
 
 ##### `remote_port`
 
-This parameter value is the second end point of an IPsec rule
+This parameter value is the second end point of an IPsec rule, use an array to pass more then one
 
 Default value: `any`
 
@@ -265,12 +277,18 @@ Default value: `any`
 The following parameters are available in the `windows_firewall_ipsec_rule` type.
 
 * [`name`](#name)
+* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of this rule
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `windows_firewall_ipsec_rule` resource. You will seldom need to specify this ---
+Puppet will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_profile"></a>`windows_firewall_profile`
 
@@ -292,7 +310,7 @@ Configures default inbound and outbound behavior
 
 Valid values: `enable`, `disable`, `notconfigured`
 
-Notify user when a program listens for inbound connections.
+Notify user when a program listens for inbound connections
 
 ##### `localconsecrules`
 
@@ -338,19 +356,25 @@ State of this firewall profile
 
 Valid values: `enable`, `disable`, `notconfigured`
 
-Control stateful unicast response to multicast.
+Control stateful unicast response to multicast
 
 #### Parameters
 
 The following parameters are available in the `windows_firewall_profile` type.
 
 * [`name`](#name)
+* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of the profile to work on
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `windows_firewall_profile` resource. You will seldom need to specify this ---
+Puppet will usually discover the appropriate provider for your platform.
 
 ### <a name="windows_firewall_rule"></a>`windows_firewall_rule`
 
@@ -445,13 +469,13 @@ Default value: `any`
 
 ##### `local_address`
 
-the local IP the rule targets (hostname not allowed)
+the local IP the rule targets (hostname not allowed), use an array to pass more then one
 
 Default value: `any`
 
 ##### `local_port`
 
-the local port the rule targets
+the local port the rule targets, use an array to pass more then one
 
 ##### `local_user`
 
@@ -481,7 +505,7 @@ the protocol the rule targets
 
 ##### `remote_address`
 
-the remote IP the rule targets (hostname not allowed)
+the remote IP the rule targets (hostname not allowed), use an array to pass more then one
 
 Default value: `any`
 
@@ -493,7 +517,7 @@ Default value: `any`
 
 ##### `remote_port`
 
-the remote port the rule targets
+the remote port the rule targets, use an array to pass more then one
 
 Default value: `any`
 
@@ -514,10 +538,16 @@ Default value: `any`
 The following parameters are available in the `windows_firewall_rule` type.
 
 * [`name`](#name)
+* [`provider`](#provider)
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 Name of this rule
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `windows_firewall_rule` resource. You will seldom need to specify this --- Puppet
+will usually discover the appropriate provider for your platform.
 
