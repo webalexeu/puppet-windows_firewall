@@ -171,8 +171,7 @@ function create {
     }
     # `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
-    # `-Command`, just do a simple string split. The firewall GUI will sort any
-    # passed port ranges but the PS API does not
+    # `-Command`, just do a simple string split
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }
@@ -195,6 +194,9 @@ function create {
     }
 
     # Host filter
+    # `$LocalAddress` and `$RemoteAddress` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split
     if ($LocalAddress) {
         $params.Add("LocalAddress", ($LocalAddress -split ','))
     }
@@ -270,8 +272,7 @@ function update {
     }
     # `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
-    # `-Command`, just do a simple string split. The firewall GUI will sort any
-    # passed port ranges but the PS API does not
+    # `-Command`, just do a simple string split
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }
@@ -294,6 +295,9 @@ function update {
     }
 
     # Host filter
+    # `$LocalAddress` and `$RemoteAddress` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split
     if ($LocalAddress) {
         $params.Add("LocalAddress", ($LocalAddress -split ','))
     }
