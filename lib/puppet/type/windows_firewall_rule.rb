@@ -97,6 +97,11 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       end
     end
 
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
     # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
@@ -113,6 +118,11 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       if value.include?(',')
         raise "Invalid value '#{value}'. Comma is not allowed"
       end
+    end
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
     end
 
     # Compare sorted arrays to avoid corrective
@@ -160,6 +170,11 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       end
     end
 
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
     # Compare sorted arrays to avoid corrective
     def insync?(is)
       is.sort == should.sort
@@ -183,6 +198,11 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       if value.include?(',')
         raise "Invalid value '#{value}'. Comma is not allowed"
       end
+    end
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
     end
 
     # Compare sorted arrays to avoid corrective
