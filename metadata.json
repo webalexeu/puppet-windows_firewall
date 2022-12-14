@@ -1,6 +1,6 @@
 {
   "name": "webalex-windows_firewall",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "webalex",
   "summary": "Manage the windows firewall with Puppet",
   "license": "Apache-2.0",

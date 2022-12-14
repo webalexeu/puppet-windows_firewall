@@ -135,12 +135,15 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
   newproperty(:protocol) do
     desc 'the protocol the rule targets'
+
     # Also accept 0-255 :/
-    newvalues(:tcp, :udp, :icmpv4, :icmpv6, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
+    newvalues(:any, :tcp, :udp, :icmpv4, :icmpv6, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
     isrequired
     def insync?(is)
       is.to_s == should.to_s
     end
+
+    defaultto :any
   end
 
   newproperty(:icmp_type) do
