@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.4.1 (2022-12-14)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.4.0...v1.4.1)
+
+**Features**
+
+**Bugfixes**
+
+- [Cannot use 'any' for protocol parameter](https://github.com/webalexeu/puppet-windows_firewall/issues/26)
+
+**Known Issues**
+
 ## Release 1.4.0 (2022-12-07)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.3.4...v1.4.0)
@@ -15,6 +27,8 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+- Cannot use 'any' for protocol parameter
 
 ## Release 1.3.4 (2022-08-23)
 
