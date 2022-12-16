@@ -17,13 +17,13 @@ Puppet::Type.newtype(:windows_firewall_profile) do
     desc 'State of this firewall profile'
     newvalues(:on, :off, true, false)
     munge do |value|
-      if value == true
-        munged = :on
-      elsif value == false
-        munged = :off
-      else
-        munged = value
-      end
+      munged = if value == true
+                 :on
+               elsif value == false
+                 :off
+               else
+                 value
+               end
 
       munged
     end
@@ -39,15 +39,15 @@ Puppet::Type.newtype(:windows_firewall_profile) do
   newproperty(:localfirewallrules) do
     desc 'Merge local firewall rules with Group Policy rules. Valid when configuring a Group Policy store'
     newvalues(:enable, :disable, :notconfigured)
-    validate do |value|
+    validate do |_value|
       raise("property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this")
     end
   end
 
   newproperty(:localconsecrules) do
-    desc "Merge local connection security rules with Group Policy rules. Valid when configuring a Group Policy store"
+    desc 'Merge local connection security rules with Group Policy rules. Valid when configuring a Group Policy store'
     newvalues(:enable, :disable, :notconfigured)
-    validate do |value|
+    validate do |_value|
       raise("property is read-only because I'm not sure how to read the current value - pls open a ticket with info if you want this")
     end
   end

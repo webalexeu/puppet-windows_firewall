@@ -1,14 +1,14 @@
 require 'puppet_x'
 require_relative '../../../puppet_x/windows_firewall_ipsec'
 
-Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_rule, :parent => Puppet::Provider) do
-  confine :osfamily => :windows
+Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_rule, parent: Puppet::Provider) do
+  confine osfamily: :windows
   mk_resource_methods
   desc 'Windows Firewall'
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if resource = resources[prov.name]
+      if (resource = resources[prov.name])
         resource.provider = prov
       end
     end
@@ -38,5 +38,4 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
       PuppetX::WindowsFirewallIPSec.update_rule @resource
     end
   end
-
 end
