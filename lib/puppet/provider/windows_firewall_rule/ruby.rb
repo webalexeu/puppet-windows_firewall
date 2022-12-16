@@ -27,7 +27,7 @@ Puppet::Type.type(:windows_firewall_rule).provide(:windows_firewall_rule, parent
   end
 
   def self.instances
-    PuppetX::WindowsFirewall.rules.collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.rules.map { |hash| new(hash) }
   end
 
   def flush

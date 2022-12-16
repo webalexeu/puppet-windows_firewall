@@ -28,7 +28,7 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
   def destroy; end
 
   def self.instances
-    PuppetX::WindowsFirewall.profiles(command(:cmd)).collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.profiles(command(:cmd)).map { |hash| new(hash) }
   end
 
   def flush

@@ -27,7 +27,7 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
   end
 
   def self.instances
-    PuppetX::WindowsFirewallIPSec.rules.collect { |hash| new(hash) }
+    PuppetX::WindowsFirewallIPSec.rules.map { |hash| new(hash) }
   end
 
   def flush

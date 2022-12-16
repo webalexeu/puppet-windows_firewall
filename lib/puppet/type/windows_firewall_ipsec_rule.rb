@@ -233,7 +233,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     desc 'Name of this rule'
     isnamevar
     validate do |value|
-      raise "it is not allowed to have a rule called 'any'" if value.downcase == 'any'
+      raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
 end

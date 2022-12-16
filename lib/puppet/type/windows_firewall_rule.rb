@@ -184,7 +184,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
     defaultto do
       # Default is different when icmp_type is used
-      if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
+      if (@resource[:icmp_type] != :any) && !@resource[:icmp_type].nil?
         'rpc'
       else
         'any'
@@ -232,7 +232,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Path to program this rule applies to'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -253,7 +253,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'service names this rule applies to'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -275,7 +275,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated computer accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -285,7 +285,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated user accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -295,7 +295,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated user accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -305,7 +305,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Name of this rule'
     isnamevar
     validate do |value|
-      raise "it is not allowed to have a rule called 'any'" if value.downcase == 'any'
+      raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
 end

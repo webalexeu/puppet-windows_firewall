@@ -28,7 +28,7 @@ Puppet::Type.type(:windows_firewall_group).provide(:windows_firewall_group, pare
   def destroy; end
 
   def self.instances
-    PuppetX::WindowsFirewall.groups.collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.groups.map { |hash| new(hash) }
   end
 
   def flush

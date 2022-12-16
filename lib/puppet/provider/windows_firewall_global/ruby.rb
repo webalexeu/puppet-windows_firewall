@@ -28,7 +28,7 @@ Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, pa
   def destroy; end
 
   def self.instances
-    PuppetX::WindowsFirewall.globals(command(:cmd)).collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.globals(command(:cmd)).map { |hash| new(hash) }
   end
 
   def flush
