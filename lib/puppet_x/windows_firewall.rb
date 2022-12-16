@@ -2,6 +2,8 @@ require 'puppet_x'
 require 'pp'
 require 'puppet/util'
 require 'puppet/util/windows'
+
+# This module manage Windows Firewall rules
 module PuppetX::WindowsFirewall
   MOD_DIR = 'windows_firewall/lib'.freeze
   SCRIPT_FILE = 'ps-bridge.ps1'.freeze

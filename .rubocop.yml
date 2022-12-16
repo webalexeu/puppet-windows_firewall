@@ -517,3 +517,7 @@ Style/RedundantArgument:
   Enabled: false
 Style/SwapValues:
   Enabled: false
+
+# Discard multi-line chains of blocks
+Style/MultilineBlockChain:
+  Enabled: false

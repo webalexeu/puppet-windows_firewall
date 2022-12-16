@@ -1,5 +1,7 @@
 require 'puppet_x'
 require 'pp'
+
+# This module manage Windows Firewall IPSec rules
 module PuppetX::WindowsFirewallIPSec
   MOD_DIR = 'windows_firewall/lib'.freeze
   SCRIPT_FILE = 'ps-bridge-ipsec.ps1'.freeze
