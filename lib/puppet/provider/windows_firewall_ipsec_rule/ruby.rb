@@ -34,8 +34,7 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
     # Update rule
     # Only if IS value ensure == SHOULD value ensure
     # @property_hash contains the IS values (thanks Gary!). For new rules there is no IS, there is only the SHOULD
-    if @property_hash[:ensure] == @resource[:ensure]
-      PuppetX::WindowsFirewallIPSec.update_rule @resource
-    end
+    return unless @property_hash[:ensure] == @resource[:ensure]
+    PuppetX::WindowsFirewallIPSec.update_rule @resource
   end
 end
