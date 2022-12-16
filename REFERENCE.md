@@ -104,16 +104,16 @@ Configures how CRL checking is enforced
 
 The following parameters are available in the `windows_firewall_global` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-windows_firewall_global--name)
+* [`provider`](#-windows_firewall_global--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-windows_firewall_global--name"></a>`name`
 
 namevar
 
 Not used (reference only)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windows_firewall_global--provider"></a>`provider`
 
 The specific backend to use for this `windows_firewall_global` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -128,7 +128,7 @@ The following properties are available in the `windows_firewall_group` type.
 
 ##### `enabled`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Whether the rule group is enabled (`true` or `false`)
 
@@ -138,16 +138,16 @@ Default value: `true`
 
 The following parameters are available in the `windows_firewall_group` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-windows_firewall_group--name)
+* [`provider`](#-windows_firewall_group--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-windows_firewall_group--name"></a>`name`
 
 namevar
 
 Name of the rule group to enable/disable
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windows_firewall_group--provider"></a>`provider`
 
 The specific backend to use for this `windows_firewall_group` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -176,7 +176,7 @@ Specifies the localized, user-facing name of the firewall rule being created
 
 ##### `enabled`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 This parameter specifies that the rule object is administratively enabled or administratively disabled (`true` or `false`)
 
@@ -276,16 +276,16 @@ Default value: `any`
 
 The following parameters are available in the `windows_firewall_ipsec_rule` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-windows_firewall_ipsec_rule--name)
+* [`provider`](#-windows_firewall_ipsec_rule--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-windows_firewall_ipsec_rule--name"></a>`name`
 
 namevar
 
 Name of this rule
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windows_firewall_ipsec_rule--provider"></a>`provider`
 
 The specific backend to use for this `windows_firewall_ipsec_rule` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
@@ -348,7 +348,7 @@ Allow remote management of Windows Firewall
 
 ##### `state`
 
-Valid values: `on`, `off`, ``true``, ``false``
+Valid values: `on`, `off`, `true`, `false`
 
 State of this firewall profile
 
@@ -362,16 +362,16 @@ Control stateful unicast response to multicast
 
 The following parameters are available in the `windows_firewall_profile` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-windows_firewall_profile--name)
+* [`provider`](#-windows_firewall_profile--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-windows_firewall_profile--name"></a>`name`
 
 namevar
 
 Name of the profile to work on
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windows_firewall_profile--provider"></a>`provider`
 
 The specific backend to use for this `windows_firewall_profile` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
@@ -428,7 +428,7 @@ Default value: `block`
 
 ##### `enabled`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Whether the rule is enabled (`true` or `false`)
 
@@ -499,9 +499,11 @@ Default value: `any`
 
 ##### `protocol`
 
-Valid values: `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
+Valid values: `any`, `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
 
 the protocol the rule targets
+
+Default value: `any`
 
 ##### `remote_address`
 
@@ -537,16 +539,16 @@ Default value: `any`
 
 The following parameters are available in the `windows_firewall_rule` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-windows_firewall_rule--name)
+* [`provider`](#-windows_firewall_rule--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-windows_firewall_rule--name"></a>`name`
 
 namevar
 
 Name of this rule
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windows_firewall_rule--provider"></a>`provider`
 
 The specific backend to use for this `windows_firewall_rule` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
