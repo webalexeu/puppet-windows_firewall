@@ -1,16 +1,16 @@
 require 'puppet_x'
 require_relative '../../../puppet_x/windows_firewall'
 
-Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, :parent => Puppet::Provider) do
-  confine :osfamily => :windows
+Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, parent: Puppet::Provider) do
+  confine osfamily: :windows
   mk_resource_methods
   desc 'Windows Firewall profile'
 
-  commands :cmd => 'netsh'
+  commands cmd: 'netsh'
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if resource = resources[prov.name]
+      if (resource = resources[prov.name])
         resource.provider = prov
       end
     end
@@ -27,16 +27,15 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
   # all work done in `flush()` method
   def destroy; end
 
-
   def self.instances
-    PuppetX::WindowsFirewall.profiles(command(:cmd)).collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.profiles(command(:cmd)).map { |hash| new(hash) }
   end
 
   def flush
     # @property_hash contains the `IS` values (thanks Gary!)... For new rules there is no `IS`, there is only the
     # `SHOULD`. The setter methods from `mk_resource_methods` (or manually created) won't be called either. You have
     # to inspect @resource instead
-    @resource.properties.each { |property|
+    @resource.properties.each do |property|
       property_name = PuppetX::WindowsFirewall.profile_argument_lookup(property.name)
       property_value = property.value
 
@@ -45,7 +44,6 @@ Puppet::Type.type(:windows_firewall_profile).provide(:windows_firewall_profile, 
       cmd = "#{command(:cmd)} advfirewall set #{@resource[:name]}profile #{arg}"
       output = execute(cmd).to_s
       Puppet.debug("...#{output}")
-    }
+    end
   end
-
 end

@@ -1,16 +1,16 @@
 require 'puppet_x'
 require_relative '../../../puppet_x/windows_firewall'
 
-Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, :parent => Puppet::Provider) do
-  confine :osfamily => :windows
+Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, parent: Puppet::Provider) do
+  confine osfamily: :windows
   mk_resource_methods
   desc 'Windows Firewall global settings'
 
-  commands :cmd => 'netsh'
+  commands cmd: 'netsh'
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if resource = resources[prov.name]
+      if (resource = resources[prov.name])
         resource.provider = prov
       end
     end
@@ -28,7 +28,7 @@ Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, :p
   def destroy; end
 
   def self.instances
-    PuppetX::WindowsFirewall.globals(command(:cmd)).collect { |hash| new(hash) }
+    PuppetX::WindowsFirewall.globals(command(:cmd)).map { |hash| new(hash) }
   end
 
   def flush
@@ -41,9 +41,8 @@ Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, :p
         :boottimerulecategory,
         :firewallrulecategory,
         :stealthrulecategory,
-        :consecrulecategory
-      ].include?(property.name)
-    }.each { |property|
+        :consecrulecategory].include?(property.name)
+    }.each do |property|
       property_name = PuppetX::WindowsFirewall.global_argument_lookup(property.name)
       property_value = property.value.instance_of?(Array) ? property.value.join(',') : property.value
 
@@ -53,7 +52,6 @@ Puppet::Type.type(:windows_firewall_global).provide(:windows_firewall_global, :p
       cmd = "#{command(:cmd)} advfirewall set global #{arg}"
       output = execute(cmd).to_s
       Puppet.debug("...#{output}")
-    }
+    end
   end
-
 end

@@ -14,7 +14,7 @@ Puppet::Type.newtype(:windows_firewall_global) do
   newproperty(:strongcrlcheck) do
     desc 'Configures how CRL checking is enforced'
     validate do |value|
-      if ! [0,1,2].include? value.to_i
+      unless [0, 1, 2].include? value.to_i
         raise('Invalid value, allowed: 0,1,2')
       end
     end
@@ -25,13 +25,13 @@ Puppet::Type.newtype(:windows_firewall_global) do
 
     validate do |value|
       value = value.to_i
-      if ! (value >= 5 && value <= 60)
-        raise("Invalid value, allowed: 0,1,2")
+      unless value >= 5 && value <= 60
+        raise('Invalid value, allowed: 0,1,2')
       end
     end
   end
 
-  newproperty(:defaultexemptions, :array_matching => :all) do
+  newproperty(:defaultexemptions, array_matching: :all) do
     desc 'Configures the default IPsec exemptions. Default is to exempt IPv6 neighbordiscovery protocol and DHCP from IPsec'
     newvalues(:none, :neighbordiscovery, :icmp, :dhcp, :notconfigured)
 
@@ -41,7 +41,6 @@ Puppet::Type.newtype(:windows_firewall_global) do
       # Element-wise comparison - http://ruby-doc.org/core-2.5.1/Array.html
       (should.map { |e| e.to_s }.sort <=> is.sort) == 0
     end
-
   end
 
   newproperty(:ipsecthroughnat) do
@@ -59,14 +58,14 @@ Puppet::Type.newtype(:windows_firewall_global) do
 
   newproperty(:authzusergrptransport) do
     desc 'Authz user group transport'
-    validate do |value|
+    validate do |_value|
       raise('property is read-only')
     end
   end
 
   newproperty(:authzcomputergrptransport) do
     desc 'Authz computer transport'
-    validate do |value|
+    validate do |_value|
       raise('property is read-only')
     end
   end
@@ -96,30 +95,29 @@ Puppet::Type.newtype(:windows_firewall_global) do
 
   newproperty(:boottimerulecategory) do
     desc 'Boot time rule category'
-    validate do |value|
+    validate do |_value|
       raise('property is read-only')
     end
   end
 
   newproperty(:firewallrulecategory) do
     desc 'Firewall rule category'
-    validate do |value|
+    validate do |_value|
       raise('property is read-only')
     end
   end
 
   newproperty(:stealthrulecategory) do
     desc 'Stealth rule category'
-    validate do |value|
+    validate do |_value|
       raise('property is read-only')
     end
   end
 
   newproperty(:consecrulecategory) do
-    desc'"con sec rule category'
-    validate do |value|
+    desc '"con sec rule category'
+    validate do |_value|
       raise('property is read-only')
     end
   end
-
 end

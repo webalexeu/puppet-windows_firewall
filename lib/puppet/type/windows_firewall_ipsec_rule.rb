@@ -4,7 +4,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   @doc = 'Manage Windows Firewall with Puppet'
 
   ensurable do
-    desc "How to ensure this firewall rule (`present` or `absent`)"
+    desc 'How to ensure this firewall rule (`present` or `absent`)'
 
     defaultto :present
     defaultvalues
@@ -15,7 +15,6 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     def insync?(is)
       (is == :present && should == :present) || (is == :absent && should == :absent)
     end
-
   end
 
   # Resource validation
@@ -27,7 +26,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   end
 
   newproperty(:enabled) do
-    desc "This parameter specifies that the rule object is administratively enabled or administratively disabled (`true` or `false`)"
+    desc 'This parameter specifies that the rule object is administratively enabled or administratively disabled (`true` or `false`)'
     newvalues(:true, :false)
     defaultto :true
   end
@@ -36,7 +35,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     desc 'Specifies the localized, user-facing name of the firewall rule being created'
     defaultto { @resource[:name] }
     validate do |value|
-      unless value.kind_of?(String)
+      unless value.is_a?(String)
         raise "Invalid value '#{value}'. Should be a string"
       end
     end
@@ -46,13 +45,13 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     desc 'This parameter provides information about the firewall rule'
     defaultto ''
     validate do |value|
-      unless value.kind_of?(String)
+      unless value.is_a?(String)
         raise "Invalid value '#{value}'. Should be a string"
       end
     end
   end
 
-  newproperty(:profile, :array_matching=>:all) do
+  newproperty(:profile, array_matching: :all) do
     desc 'Specifies one or more profiles to which the rule is assigned'
     newvalues(:domain, :private, :public, :any)
 
@@ -65,12 +64,12 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
 
   newproperty(:display_group) do
     desc 'This parameter specifies the source string for the DisplayGroup parameter (read-only)'
-    validate do |value|
+    validate do |_value|
       raise 'grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group'
     end
   end
 
-  newproperty(:local_address, :array_matching=>:all) do
+  newproperty(:local_address, array_matching: :all) do
     desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -93,7 +92,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     defaultto 'any'
   end
 
-  newproperty(:remote_address, :array_matching=>:all) do
+  newproperty(:remote_address, array_matching: :all) do
     desc 'Specifies that network packets with matching IP addresses match this rule (hostname not allowed), use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -119,14 +118,14 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
   newproperty(:protocol) do
     desc 'This parameter specifies the protocol for an IPsec rule'
     # Also accept 0-255 :/
-    newvalues(:tcp, :udp, :icmpv4, :icmpv6, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
+    newvalues(:tcp, :udp, :icmpv4, :icmpv6, %r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$})
     isrequired
     def insync?(is)
       is.to_s == should.to_s
     end
   end
 
-  newproperty(:local_port, :array_matching=>:all) do
+  newproperty(:local_port, array_matching: :all) do
     desc 'Specifies that network packets with matching IP port numbers match this rule, use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -149,7 +148,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     defaultto 'any'
   end
 
-  newproperty(:remote_port, :array_matching=>:all) do
+  newproperty(:remote_port, array_matching: :all) do
     desc 'This parameter value is the second end point of an IPsec rule, use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -179,7 +178,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     defaultto :transport
   end
 
-  newproperty(:interface_type, :array_matching=>:all) do
+  newproperty(:interface_type, array_matching: :all) do
     desc 'Specifies that only network connections made through the indicated interface types are subject to the requirements of this rule'
     newvalues(:any, :wired, :wireless, :remote_access)
 
@@ -222,7 +221,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     newvalues(:none, :default, :userkerberos)
 
     defaultto do
-      if @resource[:inbound_security] == :require|| @resource[:inbound_security] == :request || @resource[:outbound_security] == :require || @resource[:outbound_security] == :request
+      if @resource[:inbound_security] == :require || @resource[:inbound_security] == :request || @resource[:outbound_security] == :require || @resource[:outbound_security] == :request
         :default
       else
         :none
@@ -234,8 +233,7 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
     desc 'Name of this rule'
     isnamevar
     validate do |value|
-      raise "it is not allowed to have a rule called 'any'" if value.downcase == 'any'
+      raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
-
 end

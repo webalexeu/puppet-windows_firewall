@@ -4,7 +4,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   @doc = 'Manage Windows Firewall with Puppet'
 
   ensurable do
-    desc "How to ensure this firewall rule (`present` or `absent`)"
+    desc 'How to ensure this firewall rule (`present` or `absent`)'
 
     defaultto :present
     defaultvalues
@@ -15,7 +15,6 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     def insync?(is)
       (is == :present && should == :present) || (is == :absent && should == :absent)
     end
-
   end
 
   # Resource validation
@@ -29,7 +28,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
   end
 
   newproperty(:enabled) do
-    desc "Whether the rule is enabled (`true` or `false`)"
+    desc 'Whether the rule is enabled (`true` or `false`)'
     newvalues(:true, :false)
     defaultto :true
   end
@@ -38,7 +37,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Display name for this rule'
     defaultto { @resource[:name] }
     validate do |value|
-      unless value.kind_of?(String)
+      unless value.is_a?(String)
         raise "Invalid value '#{value}'. Should be a string"
       end
     end
@@ -48,18 +47,18 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Description of this rule'
     defaultto ''
     validate do |value|
-      unless value.kind_of?(String)
+      unless value.is_a?(String)
         raise "Invalid value '#{value}'. Should be a string"
       end
     end
   end
 
   newproperty(:direction) do
-    desc "Direction the rule applies to (`inbound`/`outbound`)"
+    desc 'Direction the rule applies to (`inbound`/`outbound`)'
     newvalues(:inbound, :outbound)
     isrequired
     validate do |value|
-      unless value.kind_of?(String)
+      unless value.is_a?(String)
         raise "Invalid value '#{value}'. Should be a string"
       end
       unless ['inbound', 'outbound'].include?(value)
@@ -68,7 +67,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
   end
 
-  newproperty(:profile, :array_matching=>:all) do
+  newproperty(:profile, array_matching: :all) do
     desc 'Which profile(s) this rule belongs to, use an array to pass more then one'
     newvalues(:domain, :private, :public, :any)
 
@@ -82,12 +81,12 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
   newproperty(:display_group) do
     desc 'group that the rule belongs to (read-only)'
-    validate do |value|
+    validate do |_value|
       raise 'grouping is readonly: https://social.technet.microsoft.com/Forums/office/en-US/669a8eaf-13d1-4010-b2ac-30c800c4b152/2008r2-firewall-add-rules-to-group-create-new-group'
     end
   end
 
-  newproperty(:local_address, :array_matching=>:all) do
+  newproperty(:local_address, array_matching: :all) do
     desc 'the local IP the rule targets (hostname not allowed), use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -110,7 +109,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     defaultto 'any'
   end
 
-  newproperty(:remote_address, :array_matching=>:all) do
+  newproperty(:remote_address, array_matching: :all) do
     desc 'the remote IP the rule targets (hostname not allowed), use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -137,7 +136,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'the protocol the rule targets'
 
     # Also accept 0-255 :/
-    newvalues(:any, :tcp, :udp, :icmpv4, :icmpv6, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
+    newvalues(:any, :tcp, :udp, :icmpv4, :icmpv6, %r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$})
     isrequired
     def insync?(is)
       is.to_s == should.to_s
@@ -163,7 +162,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
   end
 
-  newproperty(:local_port, :array_matching=>:all) do
+  newproperty(:local_port, array_matching: :all) do
     desc 'the local port the rule targets, use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -185,7 +184,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
     defaultto do
       # Default is different when icmp_type is used
-      if @resource[:icmp_type] != :any and !@resource[:icmp_type].nil?
+      if (@resource[:icmp_type] != :any) && !@resource[:icmp_type].nil?
         'rpc'
       else
         'any'
@@ -193,7 +192,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
   end
 
-  newproperty(:remote_port, :array_matching=>:all) do
+  newproperty(:remote_port, array_matching: :all) do
     desc 'the remote port the rule targets, use an array to pass more then one'
 
     # Checking that old syntax using comma is not used
@@ -233,13 +232,13 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Path to program this rule applies to'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
   end
 
-  newproperty(:interface_type, :array_matching=>:all) do
+  newproperty(:interface_type, array_matching: :all) do
     desc 'Interface types this rule applies to'
     newvalues(:any, :wired, :wireless, :remote_access)
 
@@ -254,7 +253,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'service names this rule applies to'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -276,7 +275,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated computer accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -286,7 +285,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated user accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -296,7 +295,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Specifies that matching IPsec rules of the indicated user accounts are created'
 
     def insync?(is)
-      "#{is}".downcase == "#{should}".downcase
+      is.to_s.casecmp(should.to_s).zero?
     end
 
     defaultto :any
@@ -306,8 +305,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     desc 'Name of this rule'
     isnamevar
     validate do |value|
-      raise "it is not allowed to have a rule called 'any'" if value.downcase == "any"
+      raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
-
 end
