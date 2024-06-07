@@ -1,4 +1,4 @@
-![Build Status](https://ci.appveyor.com/api/projects/status/github/webalexeu/puppet-windows_firewall?svg=true)
+![Build Status](https://github.com/webalexeu/puppet-windows_firewall/actions/workflows/ci.yml/badge.svg)
 # windows_firewall
 
 #### Table of Contents
