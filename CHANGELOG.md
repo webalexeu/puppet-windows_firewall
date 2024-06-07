@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.5.0 (2024-06-07)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.4.2...v1.5.0)
+
+**Features**
+
+- Add support for Puppet 8
+- Add support for Windows 11
+
+*Breaking changes*:
+ - Remove support for Windows 8
+ - Remove support for Windows 8.1
+ - Remove support for Windows 2012R2
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.4.2 (2023-01-22)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.4.1...v1.4.2)
