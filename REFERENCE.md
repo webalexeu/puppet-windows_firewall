@@ -256,7 +256,7 @@ Default value: `any`
 
 ##### `protocol`
 
-Valid values: `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
+Valid values: `tcp`, `udp`, `icmpv4`, `icmpv6`, `%r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$}`
 
 This parameter specifies the protocol for an IPsec rule
 
@@ -499,7 +499,7 @@ Default value: `any`
 
 ##### `protocol`
 
-Valid values: `any`, `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
+Valid values: `any`, `tcp`, `udp`, `icmpv4`, `icmpv6`, `%r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$}`
 
 the protocol the rule targets
 

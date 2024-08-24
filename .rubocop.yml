@@ -5,7 +5,7 @@ require:
 AllCops:
   NewCops: enable
   DisplayCopNames: true
-  TargetRubyVersion: '2.7'
+  TargetRubyVersion: '2.6'
   Include:
   - "**/*.rb"
   Exclude:
@@ -19,6 +19,7 @@ AllCops:
   - "**/Puppetfile"
   - "**/Vagrantfile"
   - "**/Guardfile"
+inherit_from: ".rubocop_todo.yml"
 Layout/LineLength:
   Description: People have wide screens, use them.
   Max: 200
@@ -528,6 +529,8 @@ Lint/DuplicateBranch:
   Enabled: false
 Lint/DuplicateMagicComment:
   Enabled: false
+Lint/DuplicateMatchPattern:
+  Enabled: false
 Lint/DuplicateRegexpCharacterClassElement:
   Enabled: false
 Lint/EmptyBlock:
@@ -644,6 +647,8 @@ Style/ComparableClamp:
   Enabled: false
 Style/ConcatArrayLiterals:
   Enabled: false
+Style/DataInheritance:
+  Enabled: false
 Style/DirEmpty:
   Enabled: false
 Style/DocumentDynamicEvalDefinition:
@@ -712,6 +717,8 @@ Style/RedundantHeredocDelimiterQuotes:
   Enabled: false
 Style/RedundantInitialize:
   Enabled: false
+Style/RedundantLineContinuation:
+  Enabled: false
 Style/RedundantSelfAssignmentBranch:
   Enabled: false
 Style/RedundantStringEscape:
@@ -721,7 +728,4 @@ Style/SelectByRegexp:
 Style/StringChars:
   Enabled: false
 Style/SwapValues:
-  Enabled: false
-# Discard multi-line chains of blocks
-Style/MultilineBlockChain:
   Enabled: false
