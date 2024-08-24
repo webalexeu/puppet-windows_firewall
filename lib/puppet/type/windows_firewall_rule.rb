@@ -173,7 +173,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
 
     defaultto do
-      if (@resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6)
+      if @resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6
         ['any']
       end
     end
@@ -201,18 +201,16 @@ Puppet::Type.newtype(:windows_firewall_rule) do
 
     defaultto do
       # local_port specific when using icmp protocol
-      if (@resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6)
+      if @resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6
         # If icmp_type is any, local_port is set to  by default
-        if (@resource[:icmp_type].include? 'any')
+        if @resource[:icmp_type].include? 'any'
           ['any']
-        else
+        elsif @resource[:icmp_type].count > 1
           # Local port is by default to rpc and rpcemap when multiple type are defined
-          if (@resource[:icmp_type].count > 1)
-            ['rpc','rpcepmap']
+          ['rpc', 'rpcepmap']
           # Local port is by default to rpc when icmp protocol is used
-          else
-            ['rpc']
-          end
+        else
+          ['rpc']
         end
       else
         ['any']
