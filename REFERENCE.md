@@ -459,6 +459,8 @@ Values should be:
   * ICMP type code pairs: 3:4 (type 3, code 4)
   * `any`
 
+Default value: `any`
+
 ##### `interface_type`
 
 Valid values: `any`, `wired`, `wireless`, `remote_access`

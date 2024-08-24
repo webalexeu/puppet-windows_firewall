@@ -145,7 +145,7 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     defaultto :any
   end
 
-  newproperty(:icmp_type) do
+  newproperty(:icmp_type, array_matching: :all) do
     desc <<-EOT
       Protocol type to use (with ICMPv4/ICMPv6)"
 
@@ -155,9 +155,26 @@ Puppet::Type.newtype(:windows_firewall_rule) do
         * `any`
     EOT
 
+    # Checking that array values are string
+    validate do |value|
+      unless value.is_a?(String)
+        raise ArgumentError, "icmp_type must be a String, got #{value.class}"
+      end
+    end
+
+    # Set all declared values to downcase to avoid corrective
+    munge do |value|
+      value.downcase
+    end
+
+    # Compare sorted arrays to avoid corrective
+    def insync?(is)
+      is.sort == should.sort
+    end
+
     defaultto do
-      if @resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6
-        :any
+      if (@resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6)
+        ['any']
       end
     end
   end
@@ -183,11 +200,22 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     end
 
     defaultto do
-      # Default is different when icmp_type is used
-      if (@resource[:icmp_type] != :any) && !@resource[:icmp_type].nil?
-        'rpc'
+      # local_port specific when using icmp protocol
+      if (@resource[:protocol] == :icmpv4 || @resource[:protocol] == :icmpv6)
+        # If icmp_type is any, local_port is set to  by default
+        if (@resource[:icmp_type].include? 'any')
+          ['any']
+        else
+          # Local port is by default to rpc and rpcemap when multiple type are defined
+          if (@resource[:icmp_type].count > 1)
+            ['rpc','rpcepmap']
+          # Local port is by default to rpc when icmp protocol is used
+          else
+            ['rpc']
+          end
+        end
       else
-        'any'
+        ['any']
       end
     end
   end

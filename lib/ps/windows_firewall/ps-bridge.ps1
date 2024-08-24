@@ -97,7 +97,8 @@ function Show {
                 LocalPort           = if ($pf.LocalPort -is [object]) { $pf.LocalPort | Sort-Object } else { $pf.LocalPort.toString() }
                 RemotePort          = if ($pf.RemotePort -is [object]) { $pf.RemotePort | Sort-Object } else { $pf.RemotePort.toString() }
                 Protocol            = $pf.Protocol
-                IcmpType            = $pf.IcmpType
+                # Do not sort as sorting is already done in the object provided
+                IcmpType            = if ($pf.IcmpType -is [object]) { $pf.IcmpType } else { $pf.IcmpType.toString() }
                 # Application Filter
                 Program             = $appf.Program
                 # Interface Filter
@@ -268,7 +269,7 @@ function update {
         $params.Add("ProtocolCode", $ProtocolCode)
     }
     if ($IcmpType) {
-        $params.Add("IcmpType", $IcmpType)
+        $params.Add("IcmpType", ($IcmpType -split ','))
     }
     # `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
