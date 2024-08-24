@@ -41,7 +41,7 @@ windows_firewall_rule { '{FCC26AEB-5C68-481A-96DA-8A404F73714C}':
   display_name          => 'Mail and Calendar',
   edge_traversal_policy => 'allow',
   enabled               => 'true',
-  icmp_type             => 'any',
+  icmp_type             => ['any'],
   interface_type        => ['any'],
   local_address         => 'any',
   local_port            => 'any',
@@ -101,15 +101,21 @@ windows_firewall_rule { "puppet - all icmpv4":
 
 You can also create a rule that only allows a specific ICMP type and code:
 ```puppet
-windows_firewall_rule { "puppet - allow icmp echo":
+windows_firewall_rule { 'puppet - allow icmp echo':
   ensure    => present,
-  direction => "inbound",
-  action    => "allow",
-  protocol  => "icmpv4",
-  icmp_type => "8:10",
+  direction => 'inbound',
+  action    => 'allow',
+  protocol  => 'icmpv4',
+  icmp_type => ['8'],
+}
+windows_firewall_rule { 'puppet - allow icmp protocol/port unreachable message':
+  ensure    => present,
+  direction => 'inbound',
+  action    => 'allow',
+  protocol  => 'icmpv4',
+  icmp_type => ['3:2','3:3'],
 }
 ```
-You need to create one rule for each `icmp_type` value (see limitations).
 
 #### Managing Ports
 
@@ -445,11 +451,8 @@ windows_firewall_profile { ['domain', 'private']:
   (obtained from: `netsh advfirewall set private`)
 
 ## Limitations
-* `netsh` is used to enumerate most rules and is very fast. In some cases 
-  `netsh` will be unable to resolve names for some rules so we fallback to
-  PowerShell instead. This is handled by the `ps-bridge.ps1`
-* Enumerate rules using PowerShell API is very slow. There's not much more that
-  can be done about this short of deleting the offending rules.
+* Enumerate rules using PowerShell API is very slow (handled by the `ps-bridge.ps1`). 
+  There's not much more that can be done about this short of deleting the offending rules.
 * Deleting (purging) rules is very slow (~5-10 minutes) This is because deleting
   these rules with PowerShell is slow. There's not much that can be done about
   this but once unwanted rules are deleted (Windows 10 ships with ~300 rules)
@@ -463,27 +466,7 @@ windows_firewall_profile { ['domain', 'private']:
 * It is not possible to edit the `grouping` for rules (netsh does not support 
   this)
 * It is not possible to edit the `localfirewallrules` or `localconsecrules` for
-  profiles (this needs corresponding group policy)
-* The Windows Advanced Firewall GUI allows multiple individual types to be set 
-  for ICMPv4 and ICMPv6 however this does not seem to be possible through the 
-  `netsh` CLI. Therefore you must create individual rules if for each type you 
-  wish to allow if you want to limit a rule in this way, eg:
-  
-  ```puppet
-  windows_firewall_rule { "allow icmp echo":
-    ensure    => present,
-    protocol  => "icmpv4",
-    icmp_type => "8",
-    action    => "allow",
-  }
-
-  windows_firewall_rule { "allow icmp time exceeded":
-    ensure    => present,
-    protocol  => "icmpv4",
-    icmp_type => "11",
-    action    => "allow",
-  }
-  ```   
+  profiles (this needs corresponding group policy)  
 
 ## Development
 

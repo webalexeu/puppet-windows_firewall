@@ -256,7 +256,7 @@ Default value: `any`
 
 ##### `protocol`
 
-Valid values: `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
+Valid values: `tcp`, `udp`, `icmpv4`, `icmpv6`, `%r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$}`
 
 This parameter specifies the protocol for an IPsec rule
 
@@ -459,8 +459,6 @@ Values should be:
   * ICMP type code pairs: 3:4 (type 3, code 4)
   * `any`
 
-Default value: `any`
-
 ##### `interface_type`
 
 Valid values: `any`, `wired`, `wireless`, `remote_access`
@@ -501,7 +499,7 @@ Default value: `any`
 
 ##### `protocol`
 
-Valid values: `any`, `tcp`, `udp`, `icmpv4`, `icmpv6`, `/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
+Valid values: `any`, `tcp`, `udp`, `icmpv4`, `icmpv6`, `%r{^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$}`
 
 the protocol the rule targets
 
