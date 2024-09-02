@@ -167,12 +167,12 @@ function create {
     if ($ProtocolCode) {
         $params.Add("ProtocolCode", $ProtocolCode)
     }
-    if ($IcmpType) {
-        $params.Add("IcmpType", $IcmpType)
-    }
-    # `$LocalPort` and `$RemotePort` will always be strings since we were
+    # `$IcmpType, `$LocalPort` and `$RemotePort` will always be strings since we were
     # invoked with `powershell -File`, rather then refactor the loader to use
     # `-Command`, just do a simple string split
+    if ($IcmpType) {
+        $params.Add("IcmpType", ($IcmpType -split ','))
+    }
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }
@@ -268,12 +268,12 @@ function update {
     if ($ProtocolCode) {
         $params.Add("ProtocolCode", $ProtocolCode)
     }
+    # `$IcmpType, `$LocalPort` and `$RemotePort` will always be strings since we were
+    # invoked with `powershell -File`, rather then refactor the loader to use
+    # `-Command`, just do a simple string split
     if ($IcmpType) {
         $params.Add("IcmpType", ($IcmpType -split ','))
     }
-    # `$LocalPort` and `$RemotePort` will always be strings since we were
-    # invoked with `powershell -File`, rather then refactor the loader to use
-    # `-Command`, just do a simple string split
     if ($LocalPort) {
         $params.Add("LocalPort", ($LocalPort -split ','))
     }

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.5.2 (2024-09-02)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.5.1...v1.5.2)
+
+**Features**
+
+**Bugfixes**
+
+- [Cannot create rule when multiple icmp_type are defined](https://github.com/webalexeu/puppet-windows_firewall/issues/33)
+
+**Known Issues**
+
 ## Release 1.5.1 (2024-08-24)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.5.0...v1.5.1)
@@ -13,6 +25,8 @@ All notable changes to this project will be documented in this file.
 - [Cannot define mutlitple icmp_type](https://github.com/webalexeu/puppet-windows_firewall/issues/31)
 
 **Known Issues**
+
+- Cannot create rule when multiple icmp_type are defined
 
 ## Release 1.5.0 (2024-06-07)
 
