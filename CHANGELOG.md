@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.6.0 (2024-09-10)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.5.2...v1.6.0)
+
+**Features**
+
+*Breaking changes*:
+ - Remove support for Puppet 4
+ - Remove support for Puppet 5
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.5.2 (2024-09-02)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.5.1...v1.5.2)
