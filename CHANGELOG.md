@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.7.0 (2025-01-02)
+
+[Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.6.1...v1.7.0)
+
+**Features**
+
+- Sign ps-bridge/ps-bridge-ipsec powershell scripts
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.6.1 (2024-09-27)
 
 [Full Changelog](https://github.com/webalexeu/puppet-windows_firewall/compare/v1.6.0...v1.6.1)
