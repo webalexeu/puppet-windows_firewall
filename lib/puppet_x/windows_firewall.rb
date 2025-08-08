@@ -108,6 +108,7 @@ module PuppetX::WindowsFirewall
     {
       enabled: ->(x) { camel_case(x) },
       action: ->(x) { camel_case(x) },
+      override_block_rules: ->(x) { camel_case(x) },
       direction: ->(x) { camel_case(x) },
       description: ->(x) { (x.empty? == true) ? "\"#{x}\"" : x },
       interface_type: ->(x) { x.map { |e| camel_case(e) }.join(',') },
@@ -132,6 +133,7 @@ module PuppetX::WindowsFirewall
     {
       enabled: ->(x) { snake_case_sym(x) },
       action: ->(x) { snake_case_sym(x) },
+      override_block_rules: ->(x) { snake_case_sym(x) },
       direction: ->(x) { snake_case_sym(x) },
       interface_type: ->(x) { x.split(',').map { |e| snake_case_sym(e.strip) } },
       profile: ->(x) { x.split(',').map { |e| snake_case_sym(e.strip) } },
