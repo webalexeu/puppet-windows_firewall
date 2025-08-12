@@ -254,6 +254,12 @@ Puppet::Type.newtype(:windows_firewall_rule) do
     isrequired
   end
 
+  newproperty(:override_block_rules) do
+    desc 'Whether the rule is allowed to override block rules'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:program) do
     desc 'Path to program this rule applies to'
 
