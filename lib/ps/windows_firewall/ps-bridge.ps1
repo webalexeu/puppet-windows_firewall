@@ -152,8 +152,7 @@ function create {
         Enabled     = $Enabled;
         DisplayName = $DisplayName;
         Description = $Description;
-        Action      = $Action;
-        OverrideBlockRules =  [bool]$OverrideBlockRules;      
+        Action      = $Action;     
     }
 
     #
@@ -161,6 +160,9 @@ function create {
     #
     if ($Direction) {
         $params.Add("Direction", $Direction)
+    }
+    if ($OverrideBlockRules) {
+        $params.Add("OverrideBlockRules", [bool]$OverrideBlockRules)
     }
     if ($EdgeTraversalPolicy) {
         $params.Add("EdgeTraversalPolicy", $EdgeTraversalPolicy)
@@ -254,7 +256,6 @@ function update {
         NewDisplayName = $DisplayName;
         Description    = $Description;
         Action         = $Action;
-        OverrideBlockRules =  [bool]$OverrideBlockRules;
     }
 
     #
@@ -262,6 +263,9 @@ function update {
     #
     if ($Direction) {
         $params.Add("Direction", $Direction)
+    }
+    if ($OverrideBlockRules) {
+        $params.Add("OverrideBlockRules", [bool]$OverrideBlockRules)
     }
     if ($EdgeTraversalPolicy) {
         $params.Add("EdgeTraversalPolicy", $EdgeTraversalPolicy)
