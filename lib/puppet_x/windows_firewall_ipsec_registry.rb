@@ -191,7 +191,8 @@ module PuppetX
       parts << "Auth2=#{auth2}" if auth2
 
       # --- Display name and description ---
-      display_name = resource[:display_name] || resource[:name]
+      display_name = resource[:display_name].to_s
+      display_name = resource[:name].to_s if display_name.empty?
       parts << "Name=#{display_name}"
       parts << "Desc=#{resource[:description] || ''}"
 
