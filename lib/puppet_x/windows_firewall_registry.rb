@@ -132,7 +132,7 @@ module PuppetX
     # The format follows the Windows Firewall v2.31 schema used in:
     #   HKLM\...\FirewallPolicy\FirewallRules
     def self.build_registry_value(resource)
-      parts = ['v2.31']
+      parts = ['v2.33']
 
       # --- Required fields ---
       parts << "Action=#{ACTION_TO_REG[resource[:action].to_s] || 'Allow'}"
@@ -188,11 +188,16 @@ module PuppetX
       svc = resource[:service].to_s
       parts << "Svc=#{(svc == 'any' || svc.empty?) ? '*' : svc}"
 
-      # --- Rule name and description ---
-      # Name= in the registry data maps to the PowerShell Name property (namevar).
-      # DisplayName is handled separately by Windows based on EmbedCtxt.
-      parts << "Name=#{resource[:name]}"
+      # --- Display name, description and group context ---
+      # Name= is the human-readable display name shown in the firewall UI.
+      # EmbedCtxt= is the group/context label; for ungrouped rules it mirrors Name=.
+      display_name = resource[:display_name].to_s
+      display_name = resource[:name].to_s if display_name.empty?
+      parts << "Name=#{display_name}"
       parts << "Desc=#{resource[:description] || ''}"
+      embed_ctxt = resource[:display_group].to_s
+      embed_ctxt = display_name if embed_ctxt.empty?
+      parts << "EmbedCtxt=#{embed_ctxt}"
 
       # --- Interface type ---
       if_types = Array(resource[:interface_type]).map { |t| INTERFACE_TYPE_TO_REG[t.to_s] }.compact

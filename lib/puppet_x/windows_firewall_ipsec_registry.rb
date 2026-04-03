@@ -128,10 +128,10 @@ module PuppetX
     end
 
     # Constructs the pipe-delimited registry string for an IPSec connection security
-    # rule resource.  The format follows the Windows Firewall v2.31 schema used in:
+    # rule resource.  The format follows the Windows Firewall v2.33 schema used in:
     #   HKLM\...\FirewallPolicy\ConnectionSecurityRules
     def self.build_registry_value(resource)
-      parts = ['v2.31']
+      parts = ['v2.33']
 
       # Connection security rules always use Action=ConSecRule (no Allow/Block).
       parts << 'Action=ConSecRule'
@@ -190,10 +190,14 @@ module PuppetX
       auth2 = PHASE2AUTH_TO_REG[resource[:phase2auth_set].to_s]
       parts << "Auth2=#{auth2}" if auth2
 
-      # --- Rule name and description ---
-      # Name= in the registry data maps to the PowerShell Name property (namevar).
-      parts << "Name=#{resource[:name]}"
+      # --- Display name, description and group context ---
+      display_name = resource[:display_name].to_s
+      display_name = resource[:name].to_s if display_name.empty?
+      parts << "Name=#{display_name}"
       parts << "Desc=#{resource[:description] || ''}"
+      embed_ctxt = resource[:display_group].to_s
+      embed_ctxt = display_name if embed_ctxt.empty?
+      parts << "EmbedCtxt=#{embed_ctxt}"
 
       parts.join('|') + '|'
     end
