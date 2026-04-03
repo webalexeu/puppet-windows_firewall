@@ -334,4 +334,20 @@ Puppet::Type.newtype(:windows_firewall_rule) do
       raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
+
+  newparam(:backend) do
+    desc <<-EOT
+      Backend to use for managing this firewall rule.
+
+      * `powershell` (default) — uses the NetSecurity PowerShell module
+        (`New-NetFirewallRule` / `Set-NetFirewallRule` / `Remove-NetFirewallRule`).
+      * `registry` — writes rules directly to the Windows Firewall registry key
+        (`HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules`).
+        Requires the `puppetlabs/registry` module.  Rule discovery is still performed via
+        PowerShell because Windows Firewall exposes all registry-backed rules through
+        `Get-NetFirewallRule` automatically.
+    EOT
+    newvalues(:powershell, :registry)
+    defaultto :powershell
+  end
 end

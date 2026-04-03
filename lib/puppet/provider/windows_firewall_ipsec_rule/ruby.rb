@@ -1,5 +1,6 @@
 require 'puppet_x'
 require_relative '../../../puppet_x/windows_firewall_ipsec'
+require_relative '../../../puppet_x/windows_firewall_ipsec_registry'
 
 Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_rule, parent: Puppet::Provider) do
   confine osfamily: :windows
@@ -19,11 +20,19 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
   end
 
   def create
-    PuppetX::WindowsFirewallIPSec.create_rule @resource
+    if resource[:backend] == :registry
+      PuppetX::WindowsFirewallIPSecRegistry.create_rule(resource)
+    else
+      PuppetX::WindowsFirewallIPSec.create_rule(resource)
+    end
   end
 
   def destroy
-    PuppetX::WindowsFirewallIPSec.delete_rule @property_hash
+    if resource[:backend] == :registry
+      PuppetX::WindowsFirewallIPSecRegistry.delete_rule(@property_hash)
+    else
+      PuppetX::WindowsFirewallIPSec.delete_rule(@property_hash)
+    end
   end
 
   def self.instances
@@ -35,6 +44,10 @@ Puppet::Type.type(:windows_firewall_ipsec_rule).provide(:windows_firewall_ipsec_
     # Only if IS value ensure == SHOULD value ensure
     # @property_hash contains the IS values (thanks Gary!). For new rules there is no IS, there is only the SHOULD
     return unless @property_hash[:ensure] == @resource[:ensure]
-    PuppetX::WindowsFirewallIPSec.update_rule @resource
+    if resource[:backend] == :registry
+      PuppetX::WindowsFirewallIPSecRegistry.update_rule(resource)
+    else
+      PuppetX::WindowsFirewallIPSec.update_rule(resource)
+    end
   end
 end

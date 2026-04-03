@@ -236,4 +236,20 @@ Puppet::Type.newtype(:windows_firewall_ipsec_rule) do
       raise "it is not allowed to have a rule called 'any'" if value.casecmp('any').zero?
     end
   end
+
+  newparam(:backend) do
+    desc <<-EOT
+      Backend to use for managing this IPSec connection security rule.
+
+      * `powershell` (default) — uses the NetSecurity PowerShell module
+        (`New-NetIPsecRule` / `Set-NetIPsecRule` / `Remove-NetIPsecRule`).
+      * `registry` — writes rules directly to the Windows Firewall registry key
+        (`HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\ConnectionSecurityRules`).
+        Requires the `puppetlabs/registry` module.  Rule discovery is still performed via
+        PowerShell because Windows Firewall exposes all registry-backed rules through
+        `Get-NetIPsecRule` automatically.
+    EOT
+    newvalues(:powershell, :registry)
+    defaultto :powershell
+  end
 end
