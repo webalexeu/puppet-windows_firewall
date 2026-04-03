@@ -190,10 +190,9 @@ module PuppetX
       auth2 = PHASE2AUTH_TO_REG[resource[:phase2auth_set].to_s]
       parts << "Auth2=#{auth2}" if auth2
 
-      # --- Display name and description ---
-      display_name = resource[:display_name].to_s
-      display_name = resource[:name].to_s if display_name.empty?
-      parts << "Name=#{display_name}"
+      # --- Rule name and description ---
+      # Name= in the registry data maps to the PowerShell Name property (namevar).
+      parts << "Name=#{resource[:name]}"
       parts << "Desc=#{resource[:description] || ''}"
 
       parts.join('|') + '|'

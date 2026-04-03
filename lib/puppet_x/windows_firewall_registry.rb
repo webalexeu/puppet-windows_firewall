@@ -188,10 +188,10 @@ module PuppetX
       svc = resource[:service].to_s
       parts << "Svc=#{(svc == 'any' || svc.empty?) ? '*' : svc}"
 
-      # --- Display name and description ---
-      display_name = resource[:display_name].to_s
-      display_name = resource[:name].to_s if display_name.empty?
-      parts << "Name=#{display_name}"
+      # --- Rule name and description ---
+      # Name= in the registry data maps to the PowerShell Name property (namevar).
+      # DisplayName is handled separately by Windows based on EmbedCtxt.
+      parts << "Name=#{resource[:name]}"
       parts << "Desc=#{resource[:description] || ''}"
 
       # --- Interface type ---
